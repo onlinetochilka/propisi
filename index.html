@@ -27,6 +27,30 @@
             --text-pad-right: 10mm;
         }
 
+        /* Расширяем контейнер для десктопа */
+        .container { max-width: 1600px !important; }
+
+        /* ОСНОВНОЙ МАКЕТ (ДЕСКТОП) */
+        .app-layout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .app-sidebar {
+            flex: 0 0 480px; /* Фиксированная ширина для инструментов */
+            max-width: 45%;
+            position: sticky;
+            top: 20px;
+            z-index: 50;
+        }
+
+        .preview-wrapper { 
+            flex: 1; min-width: 0;
+            background: rgba(255, 255, 255, 0.3); border-radius: 24px; padding: 30px; 
+            overflow-x: auto; display: flex; justify-content: center; gap: 10px; 
+        }
+
         .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .controls-grid .full-width { grid-column: 1 / -1; }
 
@@ -106,8 +130,6 @@
         .dropdown-item { padding: 14px 20px; border: none; background: none; text-align: left; font-size: 0.95rem; cursor: pointer; }
         .dropdown-item:hover { background: rgba(26, 35, 126, 0.05); color: var(--brand-blue); }
 
-        .preview-wrapper { margin-top: 40px; background: rgba(255, 255, 255, 0.3); border-radius: 24px; padding: 30px; overflow-x: auto; display: flex; justify-content: center; gap: 10px; }
-
         .worksheet-paper { width: var(--paper-w); min-height: var(--paper-h); background-color: #FFFFFF; border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); position: relative; overflow: hidden; text-align: left; flex-shrink: 0; }
         .red-line { position: absolute; top: 0; bottom: 0; left: var(--red-line-pos); width: 1px; background-color: var(--margin-color); z-index: 10; }
 
@@ -129,13 +151,20 @@
 
         .layout-1-page .worksheet-paper:nth-child(2) { display: none; }
 
+        /* АДАПТИВНОСТЬ (ПЛАНШЕТЫ И МОБИЛЬНЫЕ) */
+        @media (max-width: 1024px) {
+            .app-layout { flex-direction: column; gap: 20px; }
+            .app-sidebar { flex: none; max-width: 100%; width: 100%; position: static; }
+            .preview-wrapper { width: 100%; padding: 20px 10px; justify-content: flex-start; }
+            .worksheet-paper { zoom: 0.8; } /* Слегка уменьшаем для планшетов */
+        }
+
         @media (max-width: 768px) {
             .brand-header { flex-direction: column; text-align: center; }
             .controls-grid { grid-template-columns: 1fr; gap: 15px; }
             .action-area { flex-direction: column; width: 100%; gap: 15px; }
             .dropdown-wrapper, .dropdown-wrapper .neumo-btn, .action-area > .neumo-btn { width: 100%; }
-            .preview-wrapper { padding: 10px; justify-content: flex-start; }
-            .worksheet-paper { zoom: 0.55; }
+            .worksheet-paper { zoom: 0.55; } /* Сильнее уменьшаем для телефонов */
         }
 
         @media (max-width: 480px) {
@@ -146,10 +175,11 @@
 
         @media print {
             body { padding: 0; margin: 0; background: none; }
+            .app-layout { display: block; }
             .no-print { display: none !important; }
             .accent-mark::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .preview-wrapper, .worksheet-paper { background: white !important; box-shadow: none !important; }
-            .preview-wrapper { position: absolute; top: 0; left: 0; padding: 0; margin: 0; border: none; gap: 0; }
+            .preview-wrapper { position: absolute; top: 0; left: 0; padding: 0; margin: 0; border: none; gap: 0; display: block !important; }
             .worksheet-paper { border: none; border-radius: 0; zoom: 1 !important; margin: 0; }
             .layout-2-pages .worksheet-paper { border-right: 1px dashed var(--aux-line-color); }
             .layout-2-pages .worksheet-paper:last-child { border-right: none; }
@@ -159,127 +189,133 @@
 <body class="tochilka-theme layout-1-page">
 
     <div class="container">
-        <div class="brand-header no-print">
-            <img src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg" alt="Точилка">
-            <div class="header-text-cell">
-                <h1>Генератор прописей</h1>
-                <p class="subtitle">Создавайте аккуратные листы для тренировки красивого почерка.</p>
-            </div>
-        </div>
+        <div class="app-layout">
+            
+            <div class="app-sidebar no-print">
+                <div class="brand-header">
+                    <img src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg" alt="Точилка">
+                    <div class="header-text-cell">
+                        <h1>Генератор прописей</h1>
+                        <p class="subtitle">Создавайте аккуратные листы для тренировки красивого почерка.</p>
+                    </div>
+                </div>
 
-        <div class="neumo-card no-print">
-            <div class="controls-grid" id="controlsArea">
-                <div class="form-group full-width">
-                    <label>Текст на лист (выделите текст для форматирования)</label>
-                    <div class="editor-container neumo-inset">
-                        <div class="editor-toolbar">
-                            <div class="toolbar-group neumo-inset">
-                                <span class="toolbar-label">Текст:</span>
-                                <button class="toolbar-btn neumo-btn" data-tcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
-                                <button class="toolbar-btn neumo-btn" data-tcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
-                                <button class="toolbar-btn neumo-btn" data-tcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
-                                <button class="toolbar-btn neumo-btn" data-tcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
-                            </div>
-                            <div class="toolbar-group neumo-inset">
-                                <span class="toolbar-label">Линия:</span>
-                                <button class="toolbar-btn neumo-btn line-color-btn active-line-color" data-lcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
-                                <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
-                                <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
-                                <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
-                            </div>
-                            <div class="toolbar-group neumo-inset">
-                                <button class="toolbar-btn neumo-btn" data-ul="solid" title="Подлежащее (одна черта)">_</button>
-                                <button class="toolbar-btn neumo-btn" data-ul="double" title="Сказуемое (две черты)">=</button>
-                                <button class="toolbar-btn neumo-btn" data-ul="wavy" title="Определение (волнистая)">~</button>
-                                <button class="toolbar-btn neumo-btn" data-ul="dashed" title="Дополнение (пунктир)">- -</button>
-                                <button class="toolbar-btn neumo-btn" data-ul="dotdash" title="Обстоятельство (пунктир-точка)">-·-</button>
-                            </div>
-                            <div class="toolbar-group neumo-inset">
-                                <button id="clearFormatBtn" class="toolbar-btn neumo-btn" title="Очистить формат">🧹</button>
+                <div class="neumo-card">
+                    <div class="controls-grid" id="controlsArea">
+                        <div class="form-group full-width">
+                            <label>Текст на лист (выделите текст для форматирования)</label>
+                            <div class="editor-container neumo-inset">
+                                <div class="editor-toolbar">
+                                    <div class="toolbar-group neumo-inset">
+                                        <span class="toolbar-label">Текст:</span>
+                                        <button class="toolbar-btn neumo-btn" data-tcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
+                                        <button class="toolbar-btn neumo-btn" data-tcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
+                                        <button class="toolbar-btn neumo-btn" data-tcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
+                                        <button class="toolbar-btn neumo-btn" data-tcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
+                                    </div>
+                                    <div class="toolbar-group neumo-inset">
+                                        <span class="toolbar-label">Линия:</span>
+                                        <button class="toolbar-btn neumo-btn line-color-btn active-line-color" data-lcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
+                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
+                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
+                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
+                                    </div>
+                                    <div class="toolbar-group neumo-inset">
+                                        <button class="toolbar-btn neumo-btn" data-ul="solid" title="Подлежащее (одна черта)">_</button>
+                                        <button class="toolbar-btn neumo-btn" data-ul="double" title="Сказуемое (две черты)">=</button>
+                                        <button class="toolbar-btn neumo-btn" data-ul="wavy" title="Определение (волнистая)">~</button>
+                                        <button class="toolbar-btn neumo-btn" data-ul="dashed" title="Дополнение (пунктир)">- -</button>
+                                        <button class="toolbar-btn neumo-btn" data-ul="dotdash" title="Обстоятельство (пунктир-точка)">-·-</button>
+                                    </div>
+                                    <div class="toolbar-group neumo-inset">
+                                        <button id="clearFormatBtn" class="toolbar-btn neumo-btn" title="Очистить формат">🧹</button>
+                                    </div>
+                                </div>
+                                <div id="textEditor" class="editor-area" contenteditable="true"><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
                             </div>
                         </div>
-                        <div id="textEditor" class="editor-area" contenteditable="true"><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
+
+                        <div class="instruction-box full-width" style="margin-top: -10px;">
+                            <b>💡 Подсказка:</b> Для постановки <b>ударения</b> просто поставьте две запятые после нужной буквы (например: замо,,к). Ударение сформируется автоматически.
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formatSelect">Формат листа</label>
+                            <select id="formatSelect" class="neumo-input">
+                                <option value="a4" selected>A4 (Стандартный альбомный лист)</option>
+                                <option value="a5">A5 (Стандартная тетрадь)</option>
+                                <option value="a3">A3 (Большой плакат)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="orientationSelect">Ориентация</label>
+                            <select id="orientationSelect" class="neumo-input">
+                                <option value="portrait" selected>Книжная (Вертикально)</option>
+                                <option value="landscape">Альбомная (Горизонтально)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gridSelect">Разлиновка (сетка)</label>
+                            <select id="gridSelect" class="neumo-input">
+                                <option value="frequent">Частая косая линия (1 класс)</option>
+                                <option value="slanted">Редкая косая линия</option>
+                                <option value="narrow">Узкая линия (без косой)</option>
+                                <option value="wide">Широкая линия (старшие классы)</option>
+                                <option value="squared" selected>Клетка (математика)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modeSelect">Как пишем буквы?</label>
+                            <select id="modeSelect" class="neumo-input">
+                                <option value="tracing">Светлые буквы (для обводки)</option>
+                                <option value="copy">Темные буквы (для списывания)</option>
+                                <option value="alternating">Чередование (строка обводки / пустая)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="layoutSelect">Размещение страниц (для печати)</label>
+                            <select id="layoutSelect" class="neumo-input">
+                                <option value="1-page">1 стандартный лист на страницу</option>
+                                <option value="2-pages">2 листа рядом (экономия бумаги)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <span id="instructionText">Перед печатью или сохранением в <b>PDF</b>: проверьте чтобы поля были <b>«По умолчанию»</b> и включена <b>«Печать фоновой графики»</b>.</span>
+                    </div>
+                    
+                    <div class="action-area">
+                        <div class="dropdown-wrapper">
+                            <button id="saveDropdownBtn" class="neumo-btn btn-brand-blue">💾 СОХРАНИТЬ ⏷</button>
+                            <div class="dropdown-menu neumo-card" id="saveDropdown">
+                                <button class="dropdown-item" data-format="pdf">📄 Формат PDF</button>
+                                <button class="dropdown-item" data-format="png">🖼️ Формат PNG</button>
+                                <button class="dropdown-item" data-format="jpeg">📸 Формат JPG</button>
+                            </div>
+                        </div>
+                        <button id="printBtn" class="neumo-btn neumo-btn-primary">🖨️ РАСПЕЧАТАТЬ</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="instruction-box full-width" style="margin-top: -10px;">
-                    <b>💡 Подсказка:</b> Для постановки <b>ударения</b> просто поставьте две запятые после нужной буквы (например: замо,,к). Ударение сформируется автоматически.
+            <div class="preview-wrapper layout-1-page" id="previewContainer">
+                <div class="worksheet-paper">
+                    <div class="svg-background"></div>
+                    <div class="red-line"></div>
+                    <div class="text-content"></div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="formatSelect">Формат листа</label>
-                    <select id="formatSelect" class="neumo-input">
-                        <option value="a4" selected>A4 (Стандартный альбомный лист)</option>
-                        <option value="a5">A5 (Стандартная тетрадь)</option>
-                        <option value="a3">A3 (Большой плакат)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="orientationSelect">Ориентация</label>
-                    <select id="orientationSelect" class="neumo-input">
-                        <option value="portrait" selected>Книжная (Вертикально)</option>
-                        <option value="landscape">Альбомная (Горизонтально)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="gridSelect">Разлиновка (сетка)</label>
-                    <select id="gridSelect" class="neumo-input">
-                        <option value="frequent">Частая косая линия (1 класс)</option>
-                        <option value="slanted">Редкая косая линия</option>
-                        <option value="narrow">Узкая линия (без косой)</option>
-                        <option value="wide">Широкая линия (старшие классы)</option>
-                        <option value="squared" selected>Клетка (математика)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="modeSelect">Как пишем буквы?</label>
-                    <select id="modeSelect" class="neumo-input">
-                        <option value="tracing">Светлые буквы (для обводки)</option>
-                        <option value="copy">Темные буквы (для списывания)</option>
-                        <option value="alternating">Чередование (строка обводки / пустая)</option>
-                    </select>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="layoutSelect">Размещение страниц (для печати)</label>
-                    <select id="layoutSelect" class="neumo-input">
-                        <option value="1-page">1 стандартный лист на страницу</option>
-                        <option value="2-pages">2 листа рядом (экономия бумаги)</option>
-                    </select>
+                <div class="worksheet-paper">
+                    <div class="svg-background"></div>
+                    <div class="red-line"></div>
+                    <div class="text-content"></div>
                 </div>
             </div>
             
-            <div class="instruction-box">
-                <span id="instructionText">Перед печатью или сохранением в <b>PDF</b>: проверьте чтобы поля были <b>«По умолчанию»</b> и включена <b>«Печать фоновой графики»</b>.</span>
-            </div>
-            
-            <div class="action-area">
-                <div class="dropdown-wrapper">
-                    <button id="saveDropdownBtn" class="neumo-btn btn-brand-blue">💾 СОХРАНИТЬ ⏷</button>
-                    <div class="dropdown-menu neumo-card" id="saveDropdown">
-                        <button class="dropdown-item" data-format="pdf">📄 Формат PDF</button>
-                        <button class="dropdown-item" data-format="png">🖼️ Формат PNG</button>
-                        <button class="dropdown-item" data-format="jpeg">📸 Формат JPG</button>
-                    </div>
-                </div>
-                <button id="printBtn" class="neumo-btn neumo-btn-primary">🖨️ РАСПЕЧАТАТЬ</button>
-            </div>
-        </div>
-
-        <div class="preview-wrapper layout-1-page" id="previewContainer">
-            <div class="worksheet-paper">
-                <div class="svg-background"></div>
-                <div class="red-line"></div>
-                <div class="text-content"></div>
-            </div>
-            <div class="worksheet-paper">
-                <div class="svg-background"></div>
-                <div class="red-line"></div>
-                <div class="text-content"></div>
-            </div>
         </div>
     </div>
 
