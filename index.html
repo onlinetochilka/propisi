@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Всё сходится | Генератор прописей</title>
     
+    <!-- Глобальная Дизайн-Система -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
     
     <style>
@@ -27,10 +28,9 @@
             --text-pad-right: 10mm;
         }
 
-        /* Расширяем контейнер для десктопа */
-        .container { max-width: 1600px !important; }
+        /* Макет приложения */
+        .container { max-width: 1600px !important; margin: 0 auto; padding: 20px; }
 
-        /* ОСНОВНОЙ МАКЕТ (ДЕСКТОП) */
         .app-layout {
             display: flex;
             gap: 30px;
@@ -38,36 +38,33 @@
         }
         
         .app-sidebar {
-            flex: 0 0 480px; /* Фиксированная ширина для инструментов */
-            max-width: 45%;
+            flex: 0 0 520px; /* Комфортная фиксированная ширина для десктопа */
+            max-width: 520px;
             position: sticky;
             top: 20px;
             z-index: 50;
         }
 
         .preview-wrapper { 
-            flex: 1; min-width: 0;
+            flex: 1;
+            min-width: 0;
             background: rgba(255, 255, 255, 0.3); border-radius: 24px; padding: 30px; 
-            overflow-x: auto; display: flex; justify-content: center; gap: 10px; 
+            display: flex; justify-content: center; overflow-x: auto;
         }
 
+        /* Компоненты управления */
         .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .controls-grid .full-width { grid-column: 1 / -1; }
 
-        .brand-header { display: flex; align-items: center; gap: 16px; margin: 0 auto 30px auto; }
+        .brand-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
         .brand-header img { width: 52px; height: 52px; flex-shrink: 0; }
         .header-text-cell h1 { font-size: 2rem; margin-bottom: 4px; line-height: 1.2; }
         .header-text-cell p.subtitle { color: #64748B; font-size: 1.05rem; margin: 0; }
 
-        .editor-container { padding: 10px; margin-bottom: 15px; }
-
-        .editor-toolbar {
-            display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; align-items: center;
-        }
-
+        .editor-container { padding: 12px; margin-bottom: 15px; }
+        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; align-items: center; }
         .toolbar-group { display: flex; gap: 6px; align-items: center; padding: 4px 8px; }
-        .toolbar-label { font-size: 0.8rem; font-weight: 600; color: #64748B; margin-right: 4px; text-transform: uppercase; }
+        .toolbar-label { font-size: 0.8rem; font-weight: 600; color: #64748B; text-transform: uppercase; }
 
         .toolbar-btn {
             width: 32px; height: 32px; display: flex; justify-content: center; align-items: center;
@@ -75,7 +72,6 @@
         }
         .toolbar-btn:hover { transform: translateY(-1px); }
         .toolbar-btn:active { transform: translateY(1px); }
-
         .toolbar-btn.active-line-color { border: 2px solid var(--brand-blue); transform: translateY(1px); }
         .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
@@ -84,12 +80,8 @@
             font-size: 1.1rem; line-height: 1.5; color: #0F172A; white-space: pre-wrap; word-wrap: break-word;
         }
 
-        .custom-ul {
-            text-decoration-line: underline;
-            text-underline-offset: 3px; 
-            text-decoration-thickness: 2px;
-            text-decoration-skip-ink: none; 
-        }
+        /* Специфичные стили прописей (подчеркивания и акценты) */
+        .custom-ul { text-decoration-line: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; text-decoration-skip-ink: none; }
         .custom-ul-solid { text-decoration-style: solid; }
         .custom-ul-double { text-decoration-style: double; text-decoration-thickness: 1px; text-underline-offset: 2px; }
         .custom-ul-wavy { text-decoration-style: wavy; text-decoration-thickness: 1.5px; }
@@ -117,7 +109,6 @@
         }
 
         .action-area { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 0 10px; margin-top: 20px; }
-        
         .btn-brand-blue { background-color: var(--brand-blue) !important; color: #FFFFFF !important; }
         .btn-brand-blue:hover { background-color: #121858 !important; }
 
@@ -130,7 +121,12 @@
         .dropdown-item { padding: 14px 20px; border: none; background: none; text-align: left; font-size: 0.95rem; cursor: pointer; }
         .dropdown-item:hover { background: rgba(26, 35, 126, 0.05); color: var(--brand-blue); }
 
-        .worksheet-paper { width: var(--paper-w); min-height: var(--paper-h); background-color: #FFFFFF; border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); position: relative; overflow: hidden; text-align: left; flex-shrink: 0; }
+        /* Бумага и сетка */
+        .worksheet-paper { 
+            width: var(--paper-w); min-height: var(--paper-h); 
+            background-color: #FFFFFF; border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
+            position: relative; overflow: hidden; text-align: left; flex-shrink: 0; 
+        }
         .red-line { position: absolute; top: 0; bottom: 0; left: var(--red-line-pos); width: 1px; background-color: var(--margin-color); z-index: 10; }
 
         .text-content { position: relative; z-index: 20; padding-left: var(--text-pad-left); padding-right: var(--text-pad-right); font-family: 'Propisi', cursive; }
@@ -151,12 +147,12 @@
 
         .layout-1-page .worksheet-paper:nth-child(2) { display: none; }
 
-        /* АДАПТИВНОСТЬ (ПЛАНШЕТЫ И МОБИЛЬНЫЕ) */
+        /* Адаптивность */
         @media (max-width: 1024px) {
             .app-layout { flex-direction: column; gap: 20px; }
             .app-sidebar { flex: none; max-width: 100%; width: 100%; position: static; }
             .preview-wrapper { width: 100%; padding: 20px 10px; justify-content: flex-start; }
-            .worksheet-paper { zoom: 0.8; } /* Слегка уменьшаем для планшетов */
+            .worksheet-paper { zoom: 0.8; } 
         }
 
         @media (max-width: 768px) {
@@ -164,7 +160,7 @@
             .controls-grid { grid-template-columns: 1fr; gap: 15px; }
             .action-area { flex-direction: column; width: 100%; gap: 15px; }
             .dropdown-wrapper, .dropdown-wrapper .neumo-btn, .action-area > .neumo-btn { width: 100%; }
-            .worksheet-paper { zoom: 0.55; } /* Сильнее уменьшаем для телефонов */
+            .worksheet-paper { zoom: 0.55; } 
         }
 
         @media (max-width: 480px) {
@@ -173,6 +169,7 @@
             .editor-toolbar { gap: 8px; }
         }
 
+        /* Печать */
         @media print {
             body { padding: 0; margin: 0; background: none; }
             .app-layout { display: block; }
