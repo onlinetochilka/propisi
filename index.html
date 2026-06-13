@@ -1,744 +1,196 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Всё сходится | Генератор прописей</title>
-    
-    <!-- Глобальная Дизайн-Система -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
-    
-    <style>
-        @font-face {
-            font-family: 'Propisi';
-            src: url('https://cdn.jsdelivr.net/gh/onlinetochilka/fonts@main/ofont.ru_Propisi.ttf') format('truetype');
-            font-weight: normal; 
-            font-style: normal;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор прописей | Точилка</title>
 
-        :root {
-            --line-color: #94A3B8;     
-            --aux-line-color: #CBD5E1; 
-            --margin-color: #F87171;   
-            --brand-blue: #1A237E;
-            --paper-w: 210mm;
-            --paper-h: 297mm;
-            --red-line-pos: 20mm;
-            --text-pad-left: 25mm;
-            --text-pad-right: 10mm;
-        }
+  <!-- Yandex Tag Manager (заглушка) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 'event': 'gtm.init' });
+  </script>
+  <!-- /Yandex Tag Manager -->
 
-        /* Макет приложения */
-        .container { max-width: 1600px !important; margin: 0 auto; padding: 20px; }
-
-        .app-layout {
-            display: flex;
-            gap: 30px;
-            align-items: flex-start;
-        }
-        
-        .app-sidebar {
-            flex: 0 0 520px; /* Комфортная фиксированная ширина для десктопа */
-            max-width: 520px;
-            position: sticky;
-            top: 20px;
-            z-index: 50;
-        }
-
-        .preview-wrapper { 
-            flex: 1;
-            min-width: 0;
-            background: rgba(255, 255, 255, 0.3); border-radius: 24px; padding: 30px; 
-            display: flex; justify-content: center; overflow-x: auto;
-        }
-
-        /* Компоненты управления */
-        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .controls-grid .full-width { grid-column: 1 / -1; }
-
-        .brand-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
-        .brand-header img { width: 52px; height: 52px; flex-shrink: 0; }
-        .header-text-cell h1 { font-size: 2rem; margin-bottom: 4px; line-height: 1.2; }
-        .header-text-cell p.subtitle { color: #64748B; font-size: 1.05rem; margin: 0; }
-
-        .editor-container { padding: 12px; margin-bottom: 15px; }
-        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; align-items: center; }
-        .toolbar-group { display: flex; gap: 6px; align-items: center; padding: 4px 8px; }
-        .toolbar-label { font-size: 0.8rem; font-weight: 600; color: #64748B; text-transform: uppercase; }
-
-        .toolbar-btn {
-            width: 32px; height: 32px; display: flex; justify-content: center; align-items: center;
-            font-weight: bold; font-size: 1.1rem; padding: 0; transition: transform 0.2s;
-        }
-        .toolbar-btn:hover { transform: translateY(-1px); }
-        .toolbar-btn:active { transform: translateY(1px); }
-        .toolbar-btn.active-line-color { border: 2px solid var(--brand-blue); transform: translateY(1px); }
-        .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-
-        .editor-area {
-            min-height: 120px; outline: none; padding: 10px; font-family: inherit;
-            font-size: 1.1rem; line-height: 1.5; color: #0F172A; white-space: pre-wrap; word-wrap: break-word;
-        }
-
-        /* Специфичные стили прописей (подчеркивания и акценты) */
-        .custom-ul { text-decoration-line: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; text-decoration-skip-ink: none; }
-        .custom-ul-solid { text-decoration-style: solid; }
-        .custom-ul-double { text-decoration-style: double; text-decoration-thickness: 1px; text-underline-offset: 2px; }
-        .custom-ul-wavy { text-decoration-style: wavy; text-decoration-thickness: 1.5px; }
-        .custom-ul-dashed { text-decoration-style: dashed; }
-        .custom-ul-dotdash { 
-            text-decoration: none !important; 
-            background-position: left 0 top 0.9em; 
-            background-size: 100% 2px; 
-            background-repeat: repeat-x; 
-            -webkit-print-color-adjust: exact; 
-            print-color-adjust: exact; 
-        }
-
-        .accent-mark { display: inline-block; width: 0; height: 0; overflow: visible; }
-        .accent-mark::after {
-            content: ""; display: block; width: 12px; height: 2.5px;
-            background-color: currentColor; border-radius: 2px;
-            transform: translate(-12px, -25px) rotate(-45deg);
-        }
-
-        .instruction-box {
-            background-color: rgba(255, 255, 255, 0.5); border-left: 4px solid var(--brand-blue);
-            padding: 16px 24px; border-radius: 0 12px 12px 0; margin: 10px 0 20px 0;
-            color: #475569; font-size: 0.95rem; line-height: 1.5; 
-        }
-
-        .action-area { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 0 10px; margin-top: 20px; }
-        .btn-brand-blue { background-color: var(--brand-blue) !important; color: #FFFFFF !important; }
-        .btn-brand-blue:hover { background-color: #121858 !important; }
-
-        .dropdown-wrapper { position: relative; display: inline-block; }
-        .dropdown-menu {
-            position: absolute; bottom: 100%; left: 0; width: 100%; min-width: 180px;
-            display: none; flex-direction: column; z-index: 100; margin-bottom: 10px; overflow: hidden;
-        }
-        .dropdown-menu.show { display: flex; }
-        .dropdown-item { padding: 14px 20px; border: none; background: none; text-align: left; font-size: 0.95rem; cursor: pointer; }
-        .dropdown-item:hover { background: rgba(26, 35, 126, 0.05); color: var(--brand-blue); }
-
-        /* Бумага и сетка */
-        .worksheet-paper { 
-            width: var(--paper-w); min-height: var(--paper-h); 
-            background-color: #FFFFFF; border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
-            position: relative; overflow: hidden; text-align: left; flex-shrink: 0; 
-        }
-        .red-line { position: absolute; top: 0; bottom: 0; left: var(--red-line-pos); width: 1px; background-color: var(--margin-color); z-index: 10; }
-
-        .text-content { position: relative; z-index: 20; padding-left: var(--text-pad-left); padding-right: var(--text-pad-right); font-family: 'Propisi', cursive; }
-        .text-line { display: block; white-space: pre-wrap; word-wrap: break-word; }
-
-        .grid-wide .text-line { font-size: 36pt; height: 36px; line-height: 36px; }
-        .grid-wide .text-content { padding-top: 18px; }
-        .grid-narrow .text-line, .grid-slanted .text-line, .grid-frequent .text-line { font-size: 36pt; height: 48px; line-height: 48px; }
-        .grid-narrow .text-content, .grid-slanted .text-content, .grid-frequent .text-content { padding-top: 12px; }
-        .grid-squared .text-line { font-size: 14mm; height: 10mm; line-height: 10mm; }
-        .grid-squared .text-content { padding-top: 1.5mm; }
-
-        .math-number { font-size: 0.6em; font-family: inherit; }
-        .math-minus { position: relative; top: -0.25em; } 
-
-        .mode-tracing .text-content, .mode-alternating .text-content { color: var(--line-color); } 
-        .mode-copy .text-content { color: #0F172A; } 
-
-        .layout-1-page .worksheet-paper:nth-child(2) { display: none; }
-
-        /* Адаптивность */
-        @media (max-width: 1024px) {
-            .app-layout { flex-direction: column; gap: 20px; }
-            .app-sidebar { flex: none; max-width: 100%; width: 100%; position: static; }
-            .preview-wrapper { width: 100%; padding: 20px 10px; justify-content: flex-start; }
-            .worksheet-paper { zoom: 0.8; } 
-        }
-
-        @media (max-width: 768px) {
-            .brand-header { flex-direction: column; text-align: center; }
-            .controls-grid { grid-template-columns: 1fr; gap: 15px; }
-            .action-area { flex-direction: column; width: 100%; gap: 15px; }
-            .dropdown-wrapper, .dropdown-wrapper .neumo-btn, .action-area > .neumo-btn { width: 100%; }
-            .worksheet-paper { zoom: 0.55; } 
-        }
-
-        @media (max-width: 480px) {
-            .toolbar-group { padding: 4px; gap: 4px; }
-            .toolbar-btn { width: 28px; height: 28px; font-size: 1rem; }
-            .editor-toolbar { gap: 8px; }
-        }
-
-        /* Печать */
-        @media print {
-            body { padding: 0; margin: 0; background: none; }
-            .app-layout { display: block; }
-            .no-print { display: none !important; }
-            .accent-mark::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .preview-wrapper, .worksheet-paper { background: white !important; box-shadow: none !important; }
-            .preview-wrapper { position: absolute; top: 0; left: 0; padding: 0; margin: 0; border: none; gap: 0; display: block !important; }
-            .worksheet-paper { border: none; border-radius: 0; zoom: 1 !important; margin: 0; }
-            .layout-2-pages .worksheet-paper { border-right: 1px dashed var(--aux-line-color); }
-            .layout-2-pages .worksheet-paper:last-child { border-right: none; }
-        }
-    </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="tochilka-theme layout-1-page">
 
-    <div class="container">
-        <div class="app-layout">
-            
-            <div class="app-sidebar no-print">
-                <div class="brand-header">
-                    <img src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg" alt="Точилка">
-                    <div class="header-text-cell">
-                        <h1>Генератор прописей</h1>
-                        <p class="subtitle">Создавайте аккуратные листы для тренировки красивого почерка.</p>
-                    </div>
+  <div class="app-container">
+    <div class="app-layout">
+
+      <aside class="app-sidebar no-print" aria-label="Настройки">
+        <header class="brand-header">
+          <img
+            class="brand-header__logo"
+            src="https://raw.githubusercontent.com/onlinetochilka/theme@main/tochilka-logo.svg"
+            alt="Точилка"
+            width="48"
+            height="48"
+          >
+          <div>
+            <h1 class="brand-header__title">Генератор прописей</h1>
+            <p class="brand-header__subtitle">Листы для тренировки почерка</p>
+          </div>
+        </header>
+
+        <div class="neumo-card">
+          <div class="controls-stack">
+
+            <div class="control-group">
+              <span class="control-label">Текст</span>
+              <div class="editor-panel neumo-inset">
+                <div class="editor-toolbar" role="toolbar" aria-label="Форматирование">
+                  <div class="toolbar-group neumo-inset">
+                    <span class="toolbar-group__label">Цвет</span>
+                    <button type="button" class="toolbar-btn interactive" data-action="text-color-black" data-color="#0F172A" title="Чёрный" aria-label="Чёрный">
+                      <span class="color-dot" style="background:#0F172A"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="text-color-red" data-color="#C62828" title="Красный" aria-label="Красный">
+                      <span class="color-dot" style="background:#C62828"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="text-color-green" data-color="#2E7D32" title="Зелёный" aria-label="Зелёный">
+                      <span class="color-dot" style="background:#2E7D32"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="text-color-blue" data-color="#1565C0" title="Синий" aria-label="Синий">
+                      <span class="color-dot" style="background:#1565C0"></span>
+                    </button>
+                  </div>
+
+                  <div class="toolbar-group neumo-inset">
+                    <span class="toolbar-group__label">Линия</span>
+                    <button type="button" class="toolbar-btn interactive is-active" data-action="line-color-black" data-color="#0F172A" title="Чёрная линия" aria-label="Чёрная линия">
+                      <span class="color-dot" style="background:#0F172A"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="line-color-red" data-color="#C62828" title="Красная линия" aria-label="Красная линия">
+                      <span class="color-dot" style="background:#C62828"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="line-color-green" data-color="#2E7D32" title="Зелёная линия" aria-label="Зелёная линия">
+                      <span class="color-dot" style="background:#2E7D32"></span>
+                    </button>
+                    <button type="button" class="toolbar-btn interactive" data-action="line-color-blue" data-color="#1565C0" title="Синяя линия" aria-label="Синяя линия">
+                      <span class="color-dot" style="background:#1565C0"></span>
+                    </button>
+                  </div>
+
+                  <div class="toolbar-group neumo-inset">
+                    <button type="button" class="toolbar-btn interactive" data-action="underline-solid" data-ul="solid" title="Подлежащее" aria-label="Подлежащее">_</button>
+                    <button type="button" class="toolbar-btn interactive" data-action="underline-double" data-ul="double" title="Сказуемое" aria-label="Сказуемое">=</button>
+                    <button type="button" class="toolbar-btn interactive" data-action="underline-wavy" data-ul="wavy" title="Определение" aria-label="Определение">~</button>
+                    <button type="button" class="toolbar-btn interactive" data-action="underline-dashed" data-ul="dashed" title="Дополнение" aria-label="Дополнение">- -</button>
+                    <button type="button" class="toolbar-btn interactive" data-action="underline-dotdash" data-ul="dotdash" title="Обстоятельство" aria-label="Обстоятельство">-·-</button>
+                  </div>
+
+                  <div class="toolbar-group neumo-inset">
+                    <button type="button" class="toolbar-btn interactive" data-action="clear-format" title="Очистить формат" aria-label="Очистить формат">⌫</button>
+                  </div>
                 </div>
 
-                <div class="neumo-card">
-                    <div class="controls-grid" id="controlsArea">
-                        <div class="form-group full-width">
-                            <label>Текст на лист (выделите текст для форматирования)</label>
-                            <div class="editor-container neumo-inset">
-                                <div class="editor-toolbar">
-                                    <div class="toolbar-group neumo-inset">
-                                        <span class="toolbar-label">Текст:</span>
-                                        <button class="toolbar-btn neumo-btn" data-tcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
-                                        <button class="toolbar-btn neumo-btn" data-tcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
-                                        <button class="toolbar-btn neumo-btn" data-tcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
-                                        <button class="toolbar-btn neumo-btn" data-tcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
-                                    </div>
-                                    <div class="toolbar-group neumo-inset">
-                                        <span class="toolbar-label">Линия:</span>
-                                        <button class="toolbar-btn neumo-btn line-color-btn active-line-color" data-lcolor="#0F172A" title="Черный"><span class="color-dot" style="background:#0F172A"></span></button>
-                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#C62828" title="Красный"><span class="color-dot" style="background:#C62828"></span></button>
-                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#2E7D32" title="Зеленый"><span class="color-dot" style="background:#2E7D32"></span></button>
-                                        <button class="toolbar-btn neumo-btn line-color-btn" data-lcolor="#1565C0" title="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
-                                    </div>
-                                    <div class="toolbar-group neumo-inset">
-                                        <button class="toolbar-btn neumo-btn" data-ul="solid" title="Подлежащее (одна черта)">_</button>
-                                        <button class="toolbar-btn neumo-btn" data-ul="double" title="Сказуемое (две черты)">=</button>
-                                        <button class="toolbar-btn neumo-btn" data-ul="wavy" title="Определение (волнистая)">~</button>
-                                        <button class="toolbar-btn neumo-btn" data-ul="dashed" title="Дополнение (пунктир)">- -</button>
-                                        <button class="toolbar-btn neumo-btn" data-ul="dotdash" title="Обстоятельство (пунктир-точка)">-·-</button>
-                                    </div>
-                                    <div class="toolbar-group neumo-inset">
-                                        <button id="clearFormatBtn" class="toolbar-btn neumo-btn" title="Очистить формат">🧹</button>
-                                    </div>
-                                </div>
-                                <div id="textEditor" class="editor-area" contenteditable="true"><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
-                            </div>
-                        </div>
-
-                        <div class="instruction-box full-width" style="margin-top: -10px;">
-                            <b>💡 Подсказка:</b> Для постановки <b>ударения</b> просто поставьте две запятые после нужной буквы (например: замо,,к). Ударение сформируется автоматически.
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="formatSelect">Формат листа</label>
-                            <select id="formatSelect" class="neumo-input">
-                                <option value="a4" selected>A4 (Стандартный альбомный лист)</option>
-                                <option value="a5">A5 (Стандартная тетрадь)</option>
-                                <option value="a3">A3 (Большой плакат)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="orientationSelect">Ориентация</label>
-                            <select id="orientationSelect" class="neumo-input">
-                                <option value="portrait" selected>Книжная (Вертикально)</option>
-                                <option value="landscape">Альбомная (Горизонтально)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="gridSelect">Разлиновка (сетка)</label>
-                            <select id="gridSelect" class="neumo-input">
-                                <option value="frequent">Частая косая линия (1 класс)</option>
-                                <option value="slanted">Редкая косая линия</option>
-                                <option value="narrow">Узкая линия (без косой)</option>
-                                <option value="wide">Широкая линия (старшие классы)</option>
-                                <option value="squared" selected>Клетка (математика)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="modeSelect">Как пишем буквы?</label>
-                            <select id="modeSelect" class="neumo-input">
-                                <option value="tracing">Светлые буквы (для обводки)</option>
-                                <option value="copy">Темные буквы (для списывания)</option>
-                                <option value="alternating">Чередование (строка обводки / пустая)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="layoutSelect">Размещение страниц (для печати)</label>
-                            <select id="layoutSelect" class="neumo-input">
-                                <option value="1-page">1 стандартный лист на страницу</option>
-                                <option value="2-pages">2 листа рядом (экономия бумаги)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="instruction-box">
-                        <span id="instructionText">Перед печатью или сохранением в <b>PDF</b>: проверьте чтобы поля были <b>«По умолчанию»</b> и включена <b>«Печать фоновой графики»</b>.</span>
-                    </div>
-                    
-                    <div class="action-area">
-                        <div class="dropdown-wrapper">
-                            <button id="saveDropdownBtn" class="neumo-btn btn-brand-blue">💾 СОХРАНИТЬ ⏷</button>
-                            <div class="dropdown-menu neumo-card" id="saveDropdown">
-                                <button class="dropdown-item" data-format="pdf">📄 Формат PDF</button>
-                                <button class="dropdown-item" data-format="png">🖼️ Формат PNG</button>
-                                <button class="dropdown-item" data-format="jpeg">📸 Формат JPG</button>
-                            </div>
-                        </div>
-                        <button id="printBtn" class="neumo-btn neumo-btn-primary">🖨️ РАСПЕЧАТАТЬ</button>
-                    </div>
-                </div>
+                <div
+                  id="textEditor"
+                  class="editor-area interactive"
+                  contenteditable="true"
+                  role="textbox"
+                  aria-multiline="true"
+                  data-action="text-editor"
+                  data-placeholder="Введите текст для прописей…"
+                ><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
+              </div>
+              <p class="control-hint">Ударение: две запятые после буквы — замо,,к</p>
             </div>
 
-            <div class="preview-wrapper layout-1-page" id="previewContainer">
-                <div class="worksheet-paper">
-                    <div class="svg-background"></div>
-                    <div class="red-line"></div>
-                    <div class="text-content"></div>
-                </div>
-                <div class="worksheet-paper">
-                    <div class="svg-background"></div>
-                    <div class="red-line"></div>
-                    <div class="text-content"></div>
-                </div>
+            <div class="control-group">
+              <span class="control-label">Формат</span>
+              <div class="segmented" role="group" aria-label="Формат листа">
+                <input class="segmented__input" type="radio" name="format" id="format-a4" value="a4" data-action="format-a4-select" checked>
+                <label class="segmented__label interactive" for="format-a4">А4</label>
+                <input class="segmented__input" type="radio" name="format" id="format-a5" value="a5" data-action="format-a5-select">
+                <label class="segmented__label interactive" for="format-a5">А5</label>
+                <input class="segmented__input" type="radio" name="format" id="format-a3" value="a3" data-action="format-a3-select">
+                <label class="segmented__label interactive" for="format-a3">А3</label>
+              </div>
             </div>
-            
+
+            <div class="control-group">
+              <span class="control-label">Ориентация</span>
+              <div class="segmented" role="group" aria-label="Ориентация">
+                <input class="segmented__input" type="radio" name="orientation" id="orient-portrait" value="portrait" data-action="orientation-portrait-select" checked>
+                <label class="segmented__label interactive" for="orient-portrait">Книжная</label>
+                <input class="segmented__input" type="radio" name="orientation" id="orient-landscape" value="landscape" data-action="orientation-landscape-select">
+                <label class="segmented__label interactive" for="orient-landscape">Альбомная</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <span class="control-label">Разлиновка</span>
+              <div class="segmented" role="group" aria-label="Разлиновка">
+                <input class="segmented__input" type="radio" name="grid" id="grid-frequent" value="frequent" data-action="grid-frequent-select">
+                <label class="segmented__label interactive" for="grid-frequent">Частая</label>
+                <input class="segmented__input" type="radio" name="grid" id="grid-slanted" value="slanted" data-action="grid-slanted-select">
+                <label class="segmented__label interactive" for="grid-slanted">Косая</label>
+                <input class="segmented__input" type="radio" name="grid" id="grid-narrow" value="narrow" data-action="grid-narrow-select">
+                <label class="segmented__label interactive" for="grid-narrow">Узкая</label>
+                <input class="segmented__input" type="radio" name="grid" id="grid-wide" value="wide" data-action="grid-wide-select">
+                <label class="segmented__label interactive" for="grid-wide">Широкая</label>
+                <input class="segmented__input" type="radio" name="grid" id="grid-squared" value="squared" data-action="grid-squared-select" checked>
+                <label class="segmented__label interactive" for="grid-squared">Клетка</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <span class="control-label">Режим</span>
+              <div class="segmented" role="group" aria-label="Режим письма">
+                <input class="segmented__input" type="radio" name="mode" id="mode-tracing" value="tracing" data-action="mode-tracing-select" checked>
+                <label class="segmented__label interactive" for="mode-tracing">Обводка</label>
+                <input class="segmented__input" type="radio" name="mode" id="mode-copy" value="copy" data-action="mode-copy-select">
+                <label class="segmented__label interactive" for="mode-copy">Списывание</label>
+                <input class="segmented__input" type="radio" name="mode" id="mode-alternating" value="alternating" data-action="mode-alternating-select">
+                <label class="segmented__label interactive" for="mode-alternating">Чередование</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <span class="control-label">Печать</span>
+              <div class="segmented" role="group" aria-label="Размещение страниц">
+                <input class="segmented__input" type="radio" name="layout" id="layout-1" value="1-page" data-action="layout-1-page-select" checked>
+                <label class="segmented__label interactive" for="layout-1">1 лист</label>
+                <input class="segmented__input" type="radio" name="layout" id="layout-2" value="2-pages" data-action="layout-2-pages-select">
+                <label class="segmented__label interactive" for="layout-2">2 листа</label>
+              </div>
+            </div>
+
+            <p class="print-hint" id="printHint">Перед печатью: поля «По умолчанию», включите «Печать фоновой графики».</p>
+
+            <div class="action-area">
+              <button type="button" class="btn-primary interactive" data-action="print-save-pdf">Распечатать / Сохранить PDF</button>
+              <button type="button" class="btn-secondary interactive" data-action="download-png">Скачать PNG</button>
+            </div>
+          </div>
         </div>
+      </aside>
+
+      <section class="app-preview layout-1-page" id="previewContainer" aria-label="Превью листа">
+        <div class="preview-stage">
+          <div class="preview-sheet-wrap" id="previewSheetWrap">
+            <article class="worksheet-paper mode-tracing grid-squared" data-format="a4">
+              <div class="svg-background" aria-hidden="true"></div>
+              <div class="red-line" aria-hidden="true"></div>
+              <div class="text-content"></div>
+            </article>
+            <article class="worksheet-paper mode-tracing grid-squared" data-format="a4">
+              <div class="svg-background" aria-hidden="true"></div>
+              <div class="red-line" aria-hidden="true"></div>
+              <div class="text-content"></div>
+            </article>
+            <p class="preview-placeholder" id="previewPlaceholder" hidden>Начните вводить текст слева, и он появится здесь</p>
+          </div>
+        </div>
+      </section>
+
     </div>
+  </div>
 
-    <script>
-        (function() {
-            document.addEventListener('DOMContentLoaded', () => {
-                const ui = {
-                    editor: document.getElementById('textEditor'),
-                    gridSelect: document.getElementById('gridSelect'),
-                    modeSelect: document.getElementById('modeSelect'),
-                    layoutSelect: document.getElementById('layoutSelect'),
-                    formatSelect: document.getElementById('formatSelect'),
-                    orientationSelect: document.getElementById('orientationSelect'),
-                    previewContainer: document.getElementById('previewContainer'),
-                    instructionText: document.getElementById('instructionText'),
-                    controlsArea: document.getElementById('controlsArea'),
-                    dropdownBtn: document.getElementById('saveDropdownBtn'),
-                    dropdownMenu: document.getElementById('saveDropdown'),
-                    printBtn: document.getElementById('printBtn'),
-                    pages: document.querySelectorAll('.worksheet-paper')
-                };
-
-                const rootStyles = document.documentElement.style;
-                let activeLineColor = '#0F172A';
-
-                const formatTextColor = (color) => {
-                    document.execCommand('styleWithCSS', false, true);
-                    document.execCommand('foreColor', false, color);
-                    updateView();
-                };
-
-                const formatUnderline = (type) => {
-                    const sel = window.getSelection();
-                    if (!sel.rangeCount || sel.isCollapsed) return;
-                    const range = sel.getRangeAt(0);
-                    
-                    const span = document.createElement('span');
-                    span.className = `custom-ul custom-ul-${type}`;
-                    
-                    if (type === 'dotdash') {
-                        span.style.backgroundImage = `repeating-linear-gradient(to right, ${activeLineColor} 0, ${activeLineColor} 8px, transparent 8px, transparent 12px, ${activeLineColor} 12px, ${activeLineColor} 16px, transparent 16px, transparent 20px)`;
-                    } else {
-                        span.style.textDecorationColor = activeLineColor;
-                    }
-                    
-                    try {
-                        const content = range.extractContents();
-                        span.appendChild(content);
-                        range.insertNode(span);
-                    } catch (e) {
-                        alert("Пожалуйста, выделяйте текст в пределах одной строки.");
-                    }
-                    updateView();
-                };
-
-                const clearFormat = () => {
-                    document.execCommand('removeFormat', false, null);
-                    const sel = window.getSelection();
-                    if (!sel.rangeCount || sel.isCollapsed) return;
-                    
-                    const spans = ui.editor.querySelectorAll('.custom-ul');
-                    spans.forEach(span => {
-                        if (sel.containsNode(span, true)) {
-                            const text = document.createTextNode(span.textContent);
-                            span.parentNode.replaceChild(text, span);
-                        }
-                    });
-                    updateView();
-                };
-
-                document.querySelectorAll('.toolbar-btn[data-tcolor]').forEach(btn => btn.addEventListener('click', () => formatTextColor(btn.dataset.tcolor)));
-                document.querySelectorAll('.toolbar-btn[data-ul]').forEach(btn => btn.addEventListener('click', () => formatUnderline(btn.dataset.ul)));
-                document.getElementById('clearFormatBtn').addEventListener('click', clearFormat);
-
-                document.querySelectorAll('.line-color-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.line-color-btn').forEach(b => b.classList.remove('active-line-color'));
-                        e.currentTarget.classList.add('active-line-color');
-                        activeLineColor = e.currentTarget.dataset.lcolor;
-                    });
-                });
-
-                ui.editor.addEventListener('input', updateView);
-                ui.editor.addEventListener('paste', (e) => {
-                    e.preventDefault();
-                    const text = (e.originalEvent || e).clipboardData.getData('text/plain');
-                    document.execCommand('insertText', false, text);
-                });
-
-                const setPrintStyle = (format, orientation) => {
-                    let styleNode = document.getElementById('dynamic-print-style');
-                    if (!styleNode) {
-                        styleNode = document.createElement('style');
-                        styleNode.id = 'dynamic-print-style';
-                        document.head.appendChild(styleNode);
-                    }
-                    styleNode.innerHTML = `@page { size: ${format.toUpperCase()} ${orientation}; margin: 0; }`;
-                };
-
-                const updateDimensions = () => {
-                    const format = ui.formatSelect.value;
-                    const orientation = ui.orientationSelect.value;
-                    const layout = ui.layoutSelect.value;
-
-                    const dims = { 'a3': [297, 420], 'a4': [210, 297], 'a5': [148, 210] };
-                    let [w, h] = dims[format];
-                    if (orientation === 'landscape') [w, h] = [h, w];
-
-                    setPrintStyle(format, orientation);
-
-                    if (layout === '2-pages') {
-                        rootStyles.setProperty('--paper-w', (w / 2) + 'mm');
-                        rootStyles.setProperty('--paper-h', h + 'mm');
-                        rootStyles.setProperty('--red-line-pos', '12mm');
-                        rootStyles.setProperty('--text-pad-left', '15mm');
-                        rootStyles.setProperty('--text-pad-right', '5mm');
-                        ui.instructionText.innerHTML = "Для печати 2-х листов: переключите принтер на <b>«Альбомная»</b>, поля <b>«Нет»</b> и включите <b>«Печать фоновой графики»</b>.";
-                    } else {
-                        rootStyles.setProperty('--paper-w', w + 'mm');
-                        rootStyles.setProperty('--paper-h', h + 'mm');
-                        rootStyles.setProperty('--red-line-pos', '20mm');
-                        rootStyles.setProperty('--text-pad-left', '25mm');
-                        rootStyles.setProperty('--text-pad-right', '10mm');
-                        ui.instructionText.innerHTML = "Перед печатью или сохранением в <b>PDF</b>: проверьте чтобы поля были <b>«По умолчанию»</b> и включена <b>«Печать фоновой графики»</b>.";
-                    }
-                };
-
-                const getParsedLines = (editorNode, defaultColor) => {
-                    let lines = [];
-                    let currentLine = [];
-                    
-                    const traverse = (node, state) => {
-                        if (node.nodeType === Node.TEXT_NODE) { 
-                            let text = node.textContent;
-                            for (let i = 0; i < text.length; i++) {
-                                let char = text[i];
-                                if (char === '\n') continue;
-                                
-                                if (i + 1 < text.length && char === ',' && text[i+1] === ',') {
-                                    currentLine.push({ type: 'accent', color: state.color });
-                                    i++; continue;
-                                }
-                                
-                                let isMath = /[0-9+\-№()=]/.test(char);
-                                let lastChunk = currentLine[currentLine.length - 1];
-                                
-                                if (lastChunk && lastChunk.type !== 'accent' && lastChunk.color === state.color && 
-                                    lastChunk.ul === state.ul && lastChunk.ulColor === state.ulColor && lastChunk.isMath === isMath) {
-                                    lastChunk.text += char;
-                                } else {
-                                    currentLine.push({ text: char, color: state.color, ul: state.ul, ulColor: state.ulColor, isMath: isMath });
-                                }
-                            }
-                        } else if (node.nodeType === Node.ELEMENT_NODE) { 
-                            const style = window.getComputedStyle(node);
-                            const isBlock = style.display === 'block' || node.nodeName === 'DIV' || node.nodeName === 'P';
-                            const isBr = node.nodeName === 'BR';
-                            
-                            if (isBlock && currentLine.length > 0) {
-                                lines.push(currentLine); currentLine = [];
-                            } else if (isBr) {
-                                lines.push(currentLine); currentLine = [];
-                                return;
-                            }
-                            
-                            let newState = { ...state };
-                            if (node.style.color) newState.color = node.style.color;
-                            else if (node.hasAttribute('color')) newState.color = node.getAttribute('color');
-                            
-                            if (node.classList && node.classList.contains('custom-ul')) {
-                                const ulMatch = node.className.match(/custom-ul-(solid|double|wavy|dashed|dotdash)/);
-                                if (ulMatch) newState.ul = ulMatch[1];
-                                
-                                if (node.style.textDecorationColor) {
-                                    newState.ulColor = node.style.textDecorationColor;
-                                } else if (node.style.backgroundImage) {
-                                    const bgMatch = node.style.backgroundImage.match(/rgba?\([^)]+\)|#[0-9a-fA-F]+/);
-                                    if (bgMatch) newState.ulColor = bgMatch[0];
-                                }
-                                
-                                if (!newState.ulColor) newState.ulColor = newState.color;
-                            }
-                            
-                            node.childNodes.forEach(child => traverse(child, newState));
-                            
-                            if (isBlock && currentLine.length > 0) {
-                                lines.push(currentLine); currentLine = [];
-                            }
-                        }
-                    };
-                    
-                    editorNode.childNodes.forEach(child => traverse(child, { color: defaultColor, ul: 'none', ulColor: defaultColor }));
-                    if (currentLine.length > 0) lines.push(currentLine);
-                    if (lines.length === 0) lines.push([]);
-                    
-                    return lines;
-                };
-
-                const generateGridSVG = (type) => {
-                    let svgLines = '';
-                    if (type === 'squared') {
-                        for (let y = 0; y <= 500; y += 5) svgLines += `<line x1="0" y1="${y}mm" x2="100%" y2="${y}mm" stroke="var(--line-color)" stroke-width="0.5" />`;
-                        for (let x = 0; x <= 500; x += 5) svgLines += `<line x1="${x}mm" y1="0" x2="${x}mm" y2="100%" stroke="var(--line-color)" stroke-width="0.5" />`;
-                    } else {
-                        const isWide = type === 'wide';
-                        const step = isWide ? 36 : 48;
-                        for (let y = 48; y < 2500; y += step) {
-                            if (!isWide) svgLines += `<line x1="0" y1="${y - 15.5}" x2="100%" y2="${y - 15.5}" stroke="var(--line-color)" stroke-width="1" />`;
-                            svgLines += `<line x1="0" y1="${y + 0.5}" x2="100%" y2="${y + 0.5}" stroke="var(--line-color)" stroke-width="1" />`;
-                        }
-                        if (type === 'slanted' || type === 'frequent') {
-                            const slantSpace = type === 'frequent' ? 24 : 100; 
-                            const dx = 2500 / 2.1445; 
-                            for (let x = -dx; x < 3000; x += slantSpace) svgLines += `<line x1="${x + dx}" y1="0" x2="${x}" y2="2500" stroke="var(--aux-line-color)" stroke-width="1" />`;
-                        }
-                    }
-                    return `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:0; pointer-events:none;" xmlns="http://www.w3.org/2000/svg">${svgLines}</svg>`;
-                };
-
-                function updateView() {
-                    updateDimensions();
-                    const layout = ui.layoutSelect.value;
-                    const mode = ui.modeSelect.value;
-                    
-                    ui.previewContainer.className = `preview-wrapper layout-${layout}`;
-                    document.body.className = `tochilka-theme layout-${layout}`;
-                    
-                    const defaultColor = (mode === 'tracing' || mode === 'alternating') ? '#94A3B8' : '#0F172A';
-                    let parsedLines = getParsedLines(ui.editor, defaultColor);
-                    
-                    if (mode === 'alternating') {
-                        let altLines = [];
-                        parsedLines.forEach(l => { altLines.push(l); altLines.push([]); });
-                        parsedLines = altLines;
-                    }
-
-                    let html = '';
-                    parsedLines.forEach(lineChunks => {
-                        let lineHtml = '&#8203;'; 
-                        lineChunks.forEach(chunk => {
-                            if (chunk.type === 'accent') {
-                                lineHtml += '<span class="accent-mark"></span>';
-                            } else {
-                                let classes = [];
-                                let styles = `color: ${chunk.color};`;
-                                
-                                if (chunk.ul !== 'none') {
-                                    classes.push('custom-ul', `custom-ul-${chunk.ul}`);
-                                    if (chunk.ul === 'dotdash') {
-                                        styles += ` background-image: repeating-linear-gradient(to right, ${chunk.ulColor} 0, ${chunk.ulColor} 8px, transparent 8px, transparent 12px, ${chunk.ulColor} 12px, ${chunk.ulColor} 16px, transparent 16px, transparent 20px);`;
-                                    } else {
-                                        styles += ` text-decoration-color: ${chunk.ulColor};`;
-                                    }
-                                }
-                                if (chunk.isMath) {
-                                    classes.push('math-number');
-                                    if (chunk.text.includes('-')) classes.push('math-minus');
-                                }
-                                
-                                let clsStr = classes.length > 0 ? ` class="${classes.join(' ')}"` : '';
-                                let text = chunk.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                lineHtml += `<span${clsStr} style="${styles}">${text}</span>`;
-                            }
-                        });
-                        html += `<div class="text-line">${lineHtml}</div>`;
-                    });
-
-                    const svgContent = generateGridSVG(ui.gridSelect.value);
-                    const modeClass = `worksheet-paper mode-${mode} grid-${ui.gridSelect.value}`;
-
-                    ui.pages.forEach(page => {
-                        page.className = modeClass;
-                        page.querySelector('.svg-background').innerHTML = svgContent;
-                        page.querySelector('.text-content').innerHTML = html;
-                    });
-                }
-
-                const exportToImage = (format) => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    const dims = { 'a3': [297, 420], 'a4': [210, 297], 'a5': [148, 210] };
-                    let [wMm, hMm] = dims[ui.formatSelect.value];
-                    if (ui.orientationSelect.value === 'landscape') [wMm, hMm] = [hMm, wMm];
-                    
-                    const layout = ui.layoutSelect.value;
-                    if (layout === '2-pages') wMm = wMm / 2;
-
-                    const scale = 4.70588; 
-                    const width = Math.round(wMm * scale);
-                    const height = Math.round(hMm * scale);
-                    
-                    canvas.width = width; canvas.height = height;
-                    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
-                    
-                    const gridType = ui.gridSelect.value;
-                    const mode = ui.modeSelect.value;
-                    const isSquared = gridType === 'squared';
-                    const isWide = gridType === 'wide';
-                    
-                    ctx.lineWidth = 1; ctx.strokeStyle = '#94A3B8';
-                    if (isSquared) {
-                        const stepPx = 5 * scale; 
-                        for (let y = 0; y <= height; y += stepPx) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
-                        for (let x = 0; x <= width; x += stepPx) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
-                    } else {
-                        const step = isWide ? 36 : 48;
-                        for (let y = 48; y < height; y += step) {
-                            if (!isWide) { ctx.beginPath(); ctx.moveTo(0, y - 15.5); ctx.lineTo(width, y - 15.5); ctx.stroke(); }
-                            ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(width, y + 0.5); ctx.stroke();
-                        }
-                        if (gridType === 'slanted' || gridType === 'frequent') {
-                            const slantSpace = gridType === 'frequent' ? 24 : 100;
-                            const dx = height / 2.1445;
-                            ctx.strokeStyle = '#CBD5E1';
-                            for (let x = -dx; x < width + dx; x += slantSpace) { ctx.beginPath(); ctx.moveTo(x + dx, 0); ctx.lineTo(x, height); ctx.stroke(); }
-                        }
-                    }
-                    
-                    ctx.strokeStyle = '#F87171'; ctx.lineWidth = 1.5; ctx.beginPath(); 
-                    const marginMm = layout === '2-pages' ? 12 : 20;
-                    const marginX = marginMm * scale; 
-                    ctx.moveTo(marginX, 0); ctx.lineTo(marginX, height); ctx.stroke();
-                    
-                    const defaultColor = (mode === 'tracing' || mode === 'alternating') ? '#94A3B8' : '#0F172A';
-                    let parsedLines = getParsedLines(ui.editor, defaultColor);
-                    
-                    if (mode === 'alternating') {
-                        let altLines = [];
-                        parsedLines.forEach(l => { altLines.push(l); altLines.push([]); });
-                        parsedLines = altLines;
-                    }
-
-                    ctx.textBaseline = "alphabetic"; 
-                    const lineHeight = isSquared ? (10 * scale) : (isWide ? 36 : 48);
-                    let currentY = isSquared ? (10 * scale) : 48; 
-                    const textPadMm = layout === '2-pages' ? 15 : 25;
-                    const startX = marginX + ((textPadMm - marginMm) * scale);
-                    
-                    parsedLines.forEach(lineChunks => {
-                        if (lineChunks.length > 0) {
-                            let currentX = startX; 
-                            let prevCharColor = defaultColor;
-                            
-                            lineChunks.forEach(chunk => {
-                                if (chunk.type === 'accent') {
-                                    const accentX = currentX - (isSquared ? 8 : 12); 
-                                    const accentY = currentY - (isSquared ? (7 * scale) : 34); 
-                                    ctx.strokeStyle = prevCharColor; ctx.lineWidth = 2.5; ctx.beginPath();
-                                    ctx.moveTo(accentX - 5, accentY + 5); ctx.lineTo(accentX + 5, accentY - 5); ctx.stroke();
-                                } else {
-                                    let fontSizePx = isSquared ? (14 * scale) : (isWide ? 36 : 48);
-                                    if (chunk.isMath) fontSizePx *= 0.6; 
-                                    
-                                    ctx.font = `${fontSizePx}px Propisi, cursive, sans-serif`;
-                                    ctx.fillStyle = chunk.color;
-                                    
-                                    let charY = currentY;
-                                    if (chunk.text.includes('-') && chunk.isMath) charY -= (fontSizePx * 0.25); 
-                                    
-                                    ctx.fillText(chunk.text, currentX, charY);
-                                    const charWidth = ctx.measureText(chunk.text).width;
-
-                                    if (chunk.ul !== 'none' && chunk.text.trim().length > 0) {
-                                        ctx.save();
-                                        ctx.strokeStyle = chunk.ulColor;
-                                        const ulY = currentY + (fontSizePx * 0.08); 
-                                        
-                                        ctx.beginPath();
-                                        if (chunk.ul === 'double') {
-                                            ctx.lineWidth = 1; 
-                                            ctx.moveTo(currentX, ulY - 1); ctx.lineTo(currentX + charWidth, ulY - 1);
-                                            ctx.moveTo(currentX, ulY + 3); ctx.lineTo(currentX + charWidth, ulY + 3);
-                                        } else {
-                                            ctx.lineWidth = 2.5;
-                                            if (chunk.ul === 'solid') {
-                                                ctx.moveTo(currentX, ulY); ctx.lineTo(currentX + charWidth, ulY);
-                                            } else if (chunk.ul === 'wavy') {
-                                                ctx.lineWidth = 1.5;
-                                                let waveLen = 8;
-                                                for (let wx = currentX; wx < currentX + charWidth; wx += waveLen) {
-                                                    ctx.quadraticCurveTo(wx + waveLen/4, ulY - 2, wx + waveLen/2, ulY);
-                                                    ctx.quadraticCurveTo(wx + waveLen*0.75, ulY + 2, wx + waveLen, ulY);
-                                                }
-                                            } else if (chunk.ul === 'dashed') {
-                                                ctx.setLineDash([10, 6]);
-                                                ctx.moveTo(currentX, ulY); ctx.lineTo(currentX + charWidth, ulY);
-                                            } else if (chunk.ul === 'dotdash') {
-                                                ctx.setLineDash([14, 6, 4, 6]); 
-                                                ctx.moveTo(currentX, ulY); ctx.lineTo(currentX + charWidth, ulY);
-                                            }
-                                        }
-                                        ctx.stroke();
-                                        ctx.restore();
-                                    }
-                                    
-                                    currentX += charWidth;
-                                    prevCharColor = chunk.color;
-                                }
-                            });
-                        }
-                        currentY += lineHeight;
-                    });
-                    
-                    const link = document.createElement('a');
-                    link.download = `прописи_точилка_${gridType}.${format}`;
-                    link.href = canvas.toDataURL(`image/${format === 'png' ? 'png' : 'jpeg'}`, 1.0);
-                    link.click();
-                };
-
-                ui.controlsArea.addEventListener('input', updateView);
-                ui.dropdownBtn.addEventListener('click', (e) => { e.stopPropagation(); ui.dropdownMenu.classList.toggle('show'); });
-                document.addEventListener('click', () => ui.dropdownMenu.classList.remove('show'));
-                
-                document.querySelectorAll('.dropdown-item').forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        const format = e.target.dataset.format;
-                        format === 'pdf' ? window.print() : exportToImage(format);
-                    });
-                });
-
-                ui.printBtn.addEventListener('click', () => window.print());
-                
-                updateView();
-            });
-        })();
-    </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
