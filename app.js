@@ -47,7 +47,6 @@ function cacheDom() {
   dom.editor = document.getElementById('textEditor');
   dom.previewContainer = document.getElementById('previewContainer');
   dom.previewPlaceholder = document.getElementById('previewPlaceholder');
-  dom.printHint = document.getElementById('printHint');
   dom.pages = document.querySelectorAll('.worksheet-paper');
 }
 
@@ -453,16 +452,12 @@ function updateDimensions() {
     root.setProperty('--red-line-pos', '12mm');
     root.setProperty('--text-pad-left', '15mm');
     root.setProperty('--text-pad-right', '5mm');
-    dom.printHint.innerHTML =
-      'Печать 2 листов: альбомная ориентация, поля «Нет», фоновая графика включена.';
   } else {
     root.setProperty('--paper-w', `${w}mm`);
     root.setProperty('--paper-h', `${h}mm`);
     root.setProperty('--red-line-pos', '20mm');
     root.setProperty('--text-pad-left', '25mm');
     root.setProperty('--text-pad-right', '10mm');
-    dom.printHint.textContent =
-      'Перед печатью: поля «По умолчанию», включите «Печать фоновой графики».';
   }
 
   dom.previewContainer.classList.toggle('is-landscape', orientation === 'landscape');

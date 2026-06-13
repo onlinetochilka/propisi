@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Генератор прописей | Точилка</title>
-
-  <!-- Yandex Tag Manager (заглушка) -->
   <script>
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'event': 'gtm.init' });
+    (function () {
+      var params = new URLSearchParams(location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) {
+        var v = params.get(k);
+        if (v) sessionStorage.setItem(k, v);
+      });
+    })();
   </script>
-  <!-- /Yandex Tag Manager -->
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -20,26 +22,38 @@
   <div class="app-container">
     <div class="app-layout">
 
+      <!-- ─── Sidebar ─── -->
       <aside class="app-sidebar no-print" aria-label="Настройки">
+
         <header class="brand-header">
           <img
-            class="brand-header__logo"
+            class="brand-logo"
             src="https://raw.githubusercontent.com/onlinetochilka/theme@main/tochilka-logo.svg"
             alt="Точилка"
-            width="48"
-            height="48"
+            width="42"
+            height="42"
           >
-          <div>
-            <h1 class="brand-header__title">Генератор прописей</h1>
-            <p class="brand-header__subtitle">Листы для тренировки почерка</p>
+          <div class="brand-text">
+            <h1 class="brand-title">Генератор прописей</h1>
+            <p class="brand-subtitle">Листы для тренировки почерка</p>
           </div>
         </header>
 
-        <div class="neumo-card">
+        <div class="neumo-card sidebar-card">
           <div class="controls-stack">
 
+            <!-- Текст -->
             <div class="control-group">
-              <span class="control-label">Текст</span>
+              <div class="control-label-row">
+                <span class="control-label">Текст</span>
+                <button
+                  type="button"
+                  class="info-trigger"
+                  data-tip="Поставьте две запятые после буквы (замо,,к) для автоматического ударения"
+                  aria-label="Подсказка об ударении"
+                  tabindex="0"
+                >i</button>
+              </div>
               <div class="editor-panel neumo-inset">
                 <div class="editor-toolbar" role="toolbar" aria-label="Форматирование">
                   <div class="toolbar-group neumo-inset">
@@ -97,9 +111,9 @@
                   data-placeholder="Введите текст для прописей…"
                 ><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
               </div>
-              <p class="control-hint">Ударение: две запятые после буквы — замо,,к</p>
             </div>
 
+            <!-- Формат -->
             <div class="control-group">
               <span class="control-label">Формат</span>
               <div class="segmented" role="group" aria-label="Формат листа">
@@ -112,6 +126,7 @@
               </div>
             </div>
 
+            <!-- Ориентация -->
             <div class="control-group">
               <span class="control-label">Ориентация</span>
               <div class="segmented" role="group" aria-label="Ориентация">
@@ -122,6 +137,7 @@
               </div>
             </div>
 
+            <!-- Разлиновка -->
             <div class="control-group">
               <span class="control-label">Разлиновка</span>
               <div class="segmented" role="group" aria-label="Разлиновка">
@@ -138,6 +154,7 @@
               </div>
             </div>
 
+            <!-- Режим -->
             <div class="control-group">
               <span class="control-label">Режим</span>
               <div class="segmented" role="group" aria-label="Режим письма">
@@ -150,8 +167,18 @@
               </div>
             </div>
 
+            <!-- Печать -->
             <div class="control-group">
-              <span class="control-label">Печать</span>
+              <div class="control-label-row">
+                <span class="control-label">Печать</span>
+                <button
+                  type="button"
+                  class="info-trigger"
+                  data-tip="В настройках принтера выберите поля «По умолчанию» и включите «Печать фоновой графики»"
+                  aria-label="Подсказка о печати"
+                  tabindex="0"
+                >i</button>
+              </div>
               <div class="segmented" role="group" aria-label="Размещение страниц">
                 <input class="segmented__input" type="radio" name="layout" id="layout-1" value="1-page" data-action="layout-1-page-select" checked>
                 <label class="segmented__label interactive" for="layout-1">1 лист</label>
@@ -160,17 +187,18 @@
               </div>
             </div>
 
-            <p class="print-hint" id="printHint">Перед печатью: поля «По умолчанию», включите «Печать фоновой графики».</p>
-
+            <!-- Actions -->
             <div class="action-area">
               <button type="button" class="btn-primary interactive" data-action="print-save-pdf">Распечатать / Сохранить PDF</button>
               <button type="button" class="btn-secondary interactive" data-action="download-png">Скачать PNG</button>
             </div>
+
           </div>
         </div>
       </aside>
 
-      <section class="app-preview layout-1-page" id="previewContainer" aria-label="Превью листа">
+      <!-- ─── Preview ─── -->
+      <section class="app-preview" id="previewContainer" aria-label="Превью листа">
         <div class="preview-stage">
           <div class="preview-sheet-wrap" id="previewSheetWrap">
             <article class="worksheet-paper mode-tracing grid-squared" data-format="a4">
