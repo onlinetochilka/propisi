@@ -3,319 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Прописи — Генератор листов для красивого почерка | Точилка</title>
-  <meta name="description" content="Бесплатный генератор прописей для школьников. Создавайте листы с разлиновкой, клеткой и косой линией для обводки, списывания и красивого почерка.">
+  <title>Прописи — Генератор рабочих листов | Точилка</title>
+  <meta name="description" content="Генератор прописей для школьников. Листы с клеткой (ГОСТ 5мм), линейкой и косой линией для обводки, списывания и тренировки почерка.">
 
   <!-- Yandex Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
 
   <!-- Yandex Metrica -->
-  <script type="text/javascript">
-    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();
-    for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
-    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-    ym(109849947, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/109849947" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex Metrica -->
+  <script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(109849947,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/109849947" style="position:absolute;left:-9999px" alt=""></div></noscript>
 
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Tochilka Design System (CDN) -->
+  <!-- Tochilka base theme -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
 
-  <!-- App Styles -->
+  <!-- App styles -->
   <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Local fonts (pre-load hints) -->
-  <link rel="preload" href="ofont.ru_Propisi.ttf" as="font" type="font/truetype" crossorigin>
-  <link rel="preload" href="ClassRoomCursive.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="preload" href="ofont.ru_Propisi.ttf"  as="font" type="font/truetype" crossorigin>
+  <link rel="preload" href="ClassRoomCursive.ttf"   as="font" type="font/truetype" crossorigin>
 </head>
 
 <body class="tochilka-theme">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-  <!-- Yandex Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="app-shell">
 
-  <div class="app-shell">
+  <!-- ══════════════════════════════════════════════
+       SIDEBAR
+       ══════════════════════════════════════════════ -->
+  <aside class="app-sidebar no-print" aria-label="Панель управления">
 
-    <!-- ═══════════════════════════════════════════════════
-         LEFT SIDEBAR — Controls
-         ═══════════════════════════════════════════════════ -->
-    <aside class="app-sidebar no-print" aria-label="Панель управления">
+    <!-- Brand -->
+    <header class="brand-header">
+      <img src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg"
+           alt="Точилка" class="brand-logo" width="40" height="40">
+      <div>
+        <h1 class="brand-title">Генератор прописей</h1>
+        <p class="brand-sub">Тренировка красивого почерка</p>
+      </div>
+    </header>
 
-      <!-- Brand header -->
-      <header class="brand-header">
-        <img
-          src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg"
-          alt="Точилка"
-          class="brand-logo"
-          width="44"
-          height="44"
-        >
-        <div>
-          <h1 class="brand-title">Генератор прописей</h1>
-          <p class="brand-subtitle">Создавайте листы для тренировки красивого почерка</p>
-        </div>
-      </header>
+    <!-- ── Panel: Editor ── -->
+    <section class="panel" aria-label="Текст прописи">
+      <div class="panel-label">Текст прописи</div>
 
-      <!-- ── PANEL 1: Text Input ── -->
-      <section class="panel" aria-label="Текст для прописи">
-        <div class="panel-label">Текст прописи</div>
+      <div class="editor-wrap">
+        <!-- Toolbar -->
+        <div class="editor-toolbar" role="toolbar" aria-label="Форматирование">
 
-        <!-- Editor -->
-        <div class="editor-wrap">
-          <!-- Toolbar -->
-          <div class="editor-toolbar" role="toolbar" aria-label="Форматирование текста">
-
-            <!-- Text color -->
-            <div class="toolbar-group" role="group" aria-label="Цвет текста">
-              <span class="toolbar-label" aria-hidden="true">Текст:</span>
-              <button class="toolbar-btn" data-tcolor="#0F172A" data-action="text-color-black"
-                      title="Чёрный" aria-label="Цвет текста: чёрный">
-                <span class="color-dot" style="background:#0F172A"></span>
-              </button>
-              <button class="toolbar-btn" data-tcolor="#C62828" data-action="text-color-red"
-                      title="Красный" aria-label="Цвет текста: красный">
-                <span class="color-dot" style="background:#C62828"></span>
-              </button>
-              <button class="toolbar-btn" data-tcolor="#2E7D32" data-action="text-color-green"
-                      title="Зелёный" aria-label="Цвет текста: зелёный">
-                <span class="color-dot" style="background:#2E7D32"></span>
-              </button>
-              <button class="toolbar-btn" data-tcolor="#1565C0" data-action="text-color-blue"
-                      title="Синий" aria-label="Цвет текста: синий">
-                <span class="color-dot" style="background:#1565C0"></span>
-              </button>
-            </div>
-
-            <!-- Line color -->
-            <div class="toolbar-group" role="group" aria-label="Цвет подчёркивания">
-              <span class="toolbar-label" aria-hidden="true">Линия:</span>
-              <button class="toolbar-btn is-active-color" data-lcolor="#0F172A" data-action="line-color-black"
-                      title="Чёрный" aria-label="Цвет линии: чёрный" aria-pressed="true">
-                <span class="color-dot" style="background:#0F172A"></span>
-              </button>
-              <button class="toolbar-btn" data-lcolor="#C62828" data-action="line-color-red"
-                      title="Красный" aria-label="Цвет линии: красный" aria-pressed="false">
-                <span class="color-dot" style="background:#C62828"></span>
-              </button>
-              <button class="toolbar-btn" data-lcolor="#2E7D32" data-action="line-color-green"
-                      title="Зелёный" aria-label="Цвет линии: зелёный" aria-pressed="false">
-                <span class="color-dot" style="background:#2E7D32"></span>
-              </button>
-              <button class="toolbar-btn" data-lcolor="#1565C0" data-action="line-color-blue"
-                      title="Синий" aria-label="Цвет линии: синий" aria-pressed="false">
-                <span class="color-dot" style="background:#1565C0"></span>
-              </button>
-            </div>
-
-            <!-- Underline types -->
-            <div class="toolbar-group" role="group" aria-label="Тип подчёркивания">
-              <button class="toolbar-btn" data-ul="solid" data-action="underline-solid"
-                      title="Подлежащее (одна черта)" aria-label="Одна черта">_</button>
-              <button class="toolbar-btn" data-ul="double" data-action="underline-double"
-                      title="Сказуемое (две черты)" aria-label="Две черты">=</button>
-              <button class="toolbar-btn" data-ul="wavy" data-action="underline-wavy"
-                      title="Определение (волнистая)" aria-label="Волнистая">∿</button>
-              <button class="toolbar-btn" data-ul="dashed" data-action="underline-dashed"
-                      title="Дополнение (пунктир)" aria-label="Пунктир">- -</button>
-              <button class="toolbar-btn" data-ul="dotdash" data-action="underline-dotdash"
-                      title="Обстоятельство (пунктир-точка)" aria-label="Пунктир-точка">-·-</button>
-            </div>
-
-            <!-- Clear format -->
-            <div class="toolbar-group">
-              <button id="clearFmtBtn" class="toolbar-btn" data-action="clear-format"
-                      title="Очистить форматирование" aria-label="Очистить форматирование">🧹</button>
-            </div>
-
+          <!-- Text color -->
+          <div class="toolbar-group" role="group" aria-label="Цвет текста">
+            <span class="toolbar-label" aria-hidden="true">Текст</span>
+            <button class="toolbar-btn tbtn" data-tc="#0F172A" data-action="tc-black"  title="Чёрный"  aria-label="Чёрный"><span class="color-dot" style="background:#0F172A"></span></button>
+            <button class="toolbar-btn tbtn" data-tc="#C62828" data-action="tc-red"    title="Красный" aria-label="Красный"><span class="color-dot" style="background:#C62828"></span></button>
+            <button class="toolbar-btn tbtn" data-tc="#2E7D32" data-action="tc-green"  title="Зелёный" aria-label="Зелёный"><span class="color-dot" style="background:#2E7D32"></span></button>
+            <button class="toolbar-btn tbtn" data-tc="#1565C0" data-action="tc-blue"   title="Синий"   aria-label="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
           </div>
 
-          <!-- Contenteditable area -->
-          <div
-            id="textEditor"
-            class="editor-area"
-            contenteditable="true"
-            role="textbox"
-            aria-multiline="true"
-            aria-label="Введите текст прописи"
-            data-placeholder="Введите текст прописи..."
-            spellcheck="true"
-          ><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
-        </div>
+          <!-- Line color -->
+          <div class="toolbar-group" role="group" aria-label="Цвет линии">
+            <span class="toolbar-label" aria-hidden="true">Линия</span>
+            <button class="toolbar-btn tbtn lc-active" data-lc="#0F172A" data-action="lc-black"  title="Чёрный"  aria-label="Чёрный" aria-pressed="true"><span class="color-dot" style="background:#0F172A"></span></button>
+            <button class="toolbar-btn tbtn" data-lc="#C62828" data-action="lc-red"    title="Красный" aria-label="Красный" aria-pressed="false"><span class="color-dot" style="background:#C62828"></span></button>
+            <button class="toolbar-btn tbtn" data-lc="#2E7D32" data-action="lc-green"  title="Зелёный" aria-label="Зелёный" aria-pressed="false"><span class="color-dot" style="background:#2E7D32"></span></button>
+            <button class="toolbar-btn tbtn" data-lc="#1565C0" data-action="lc-blue"   title="Синий"   aria-label="Синий" aria-pressed="false"><span class="color-dot" style="background:#1565C0"></span></button>
+          </div>
 
-        <div class="instruction-box">
-          <b>💡 Ударение:</b> Поставьте две запятые после нужной буквы (например: <b>замо,,к</b>) — ударение появится автоматически.
-        </div>
-      </section>
+          <!-- Underline types -->
+          <div class="toolbar-group" role="group" aria-label="Подчёркивание">
+            <button class="toolbar-btn tbtn" data-ul="solid"   data-action="ul-solid"   title="Подлежащее (_)" aria-label="Одна черта">_</button>
+            <button class="toolbar-btn tbtn" data-ul="double"  data-action="ul-double"  title="Сказуемое (=)" aria-label="Двойная">=</button>
+            <button class="toolbar-btn tbtn" data-ul="wavy"    data-action="ul-wavy"    title="Определение (∿)" aria-label="Волнистая">∿</button>
+            <button class="toolbar-btn tbtn" data-ul="dashed"  data-action="ul-dashed"  title="Дополнение (- -)" aria-label="Пунктир">- -</button>
+            <button class="toolbar-btn tbtn" data-ul="dotdash" data-action="ul-dotdash" title="Обстоятельство (-·-)" aria-label="Пунктир-точка">-·-</button>
+          </div>
 
-      <!-- ── PANEL 2: Format & Orientation ── -->
-      <section class="panel" aria-label="Формат листа">
-        <div class="panel-label">Формат и ориентация</div>
-
-        <div>
-          <div class="panel-label" style="margin-bottom:6px">Формат листа</div>
-          <div class="seg-group" role="group" aria-label="Формат листа" data-state-key="format">
-            <button class="seg-btn is-active" data-value="a4" data-action="format-a4"
-                    aria-pressed="true">A4</button>
-            <button class="seg-btn" data-value="a5" data-action="format-a5"
-                    aria-pressed="false">A5</button>
+          <!-- Clear -->
+          <div class="toolbar-group">
+            <button id="clearFmtBtn" class="toolbar-btn" data-action="clear-fmt" title="Очистить формат" aria-label="Очистить формат">🧹</button>
           </div>
         </div>
 
-        <div>
-          <div class="panel-label" style="margin-bottom:6px">Ориентация</div>
-          <div class="seg-group" role="group" aria-label="Ориентация" data-state-key="orientation">
-            <button class="seg-btn is-active" data-value="portrait" data-action="orient-portrait"
-                    aria-pressed="true">📄 Книжная</button>
-            <button class="seg-btn" data-value="landscape" data-action="orient-landscape"
-                    aria-pressed="false">🖼 Альбомная</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── PANEL 3: Grid Type ── -->
-      <section class="panel" aria-label="Разлиновка">
-        <div class="panel-label">Разлиновка (сетка)</div>
-        <div class="seg-group" role="group" aria-label="Тип сетки" data-state-key="grid"
-             style="flex-wrap: wrap; gap: 4px;">
-          <button class="seg-btn" data-value="frequent" data-action="grid-frequent"
-                  aria-pressed="false">Частая косая</button>
-          <button class="seg-btn" data-value="slanted" data-action="grid-slanted"
-                  aria-pressed="false">Редкая косая</button>
-          <button class="seg-btn" data-value="narrow" data-action="grid-narrow"
-                  aria-pressed="false">Линейка</button>
-          <button class="seg-btn" data-value="wide" data-action="grid-wide"
-                  aria-pressed="false">Широкая</button>
-          <button class="seg-btn is-active" data-value="squared" data-action="grid-squared"
-                  aria-pressed="true">Клетка 5мм</button>
-        </div>
-      </section>
-
-      <!-- ── PANEL 4: Writing Mode ── -->
-      <section class="panel" aria-label="Режим написания">
-        <div class="panel-label">Как пишем буквы?</div>
-        <div class="seg-group" role="group" aria-label="Режим написания" data-state-key="mode">
-          <button class="seg-btn is-active" data-value="tracing" data-action="mode-tracing"
-                  aria-pressed="true">Обводка</button>
-          <button class="seg-btn" data-value="copy" data-action="mode-copy"
-                  aria-pressed="false">Списывание</button>
-          <button class="seg-btn" data-value="alternating" data-action="mode-alternating"
-                  aria-pressed="false">Чередование</button>
-        </div>
-      </section>
-
-      <!-- ── PANEL 5: Sentence Analysis ── -->
-      <section class="panel" aria-label="Разбор предложения">
-
-        <div class="toggle-row">
-          <span class="toggle-label-text">Разбор предложения</span>
-          <label class="toggle-switch" aria-label="Включить режим разбора предложения">
-            <input type="checkbox" id="analysisTgl" data-action="toggle-analysis" role="switch">
-            <span class="toggle-track" aria-hidden="true"></span>
-            <span class="toggle-thumb" aria-hidden="true"></span>
-          </label>
-        </div>
-
-        <!-- Analysis pills (revealed when toggle is on) -->
-        <div id="analysisPills" class="analysis-pills" aria-live="polite">
-
-          <div class="pills-row-label">Цвет подчёркивания</div>
-          <div class="pills-row" role="group" aria-label="Цвет подчёркивания">
-            <button class="pill-btn is-active" data-acolor="#0F172A" data-action="analysis-color-black"
-                    aria-pressed="true">
-              <span class="pill-color-dot" style="background:#0F172A"></span> Чёрный
-            </button>
-            <button class="pill-btn" data-acolor="#C62828" data-action="analysis-color-red"
-                    aria-pressed="false">
-              <span class="pill-color-dot" style="background:#C62828"></span> Красный
-            </button>
-            <button class="pill-btn" data-acolor="#1565C0" data-action="analysis-color-blue"
-                    aria-pressed="false">
-              <span class="pill-color-dot" style="background:#1565C0"></span> Синий
-            </button>
-            <button class="pill-btn" data-acolor="#6D4C41" data-action="analysis-color-brown"
-                    aria-pressed="false">
-              <span class="pill-color-dot" style="background:#6D4C41"></span> Корич.
-            </button>
-          </div>
-
-          <div class="pills-row-label" style="margin-top:6px">Тип члена предложения</div>
-          <div class="pills-row" role="group" aria-label="Тип подчёркивания">
-            <button class="pill-btn is-active" data-aul="solid" data-action="analysis-ul-solid"
-                    aria-pressed="true">_ Подлежащее</button>
-            <button class="pill-btn" data-aul="double" data-action="analysis-ul-double"
-                    aria-pressed="false">= Сказуемое</button>
-            <button class="pill-btn" data-aul="wavy" data-action="analysis-ul-wavy"
-                    aria-pressed="false">∿ Определение</button>
-            <button class="pill-btn" data-aul="dashed" data-action="analysis-ul-dashed"
-                    aria-pressed="false">- Дополнение</button>
-            <button class="pill-btn" data-aul="dotdash" data-action="analysis-ul-dotdash"
-                    aria-pressed="false">-·- Обстоятельство</button>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ── Instruction ── -->
-      <div class="instruction-box">
-        Перед печатью: поля <b>«По умолчанию»</b>, включите <b>«Печать фоновой графики»</b>.
-        Для PDF — выберите принтер <b>«Сохранить как PDF»</b>.
+        <!-- Contenteditable -->
+        <div id="textEditor"
+             class="editor-area"
+             contenteditable="true"
+             role="textbox"
+             aria-multiline="true"
+             aria-label="Введите текст прописи"
+             data-placeholder="Введите текст прописи..."
+             spellcheck="true"
+        ><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
       </div>
 
-      <!-- ── Action Buttons ── -->
-      <div class="action-area">
-        <button id="printBtn" class="btn btn-primary" data-action="print-sheet" aria-label="Распечатать лист">
-          <span class="btn-text">🖨 Распечатать лист</span>
-        </button>
-        <button id="pdfBtn" class="btn btn-secondary" data-action="download-pdf" aria-label="Скачать PDF">
-          <span class="btn-text">📄 Скачать PDF</span>
-        </button>
+      <div class="hint-box">
+        <b>💡 Ударение:</b> поставьте две запятые после буквы: <b>замо,,к</b> → знак появится автоматически.
       </div>
+    </section>
 
-    </aside>
+    <!-- ── Panel: Format & Grid ── -->
+    <section class="panel" aria-label="Параметры листа">
+      <div class="panel-label">Параметры листа</div>
 
-    <!-- ═══════════════════════════════════════════════════
-         RIGHT MAIN — Worksheet Preview
-         ═══════════════════════════════════════════════════ -->
-    <main class="app-preview" aria-label="Предпросмотр листа">
-      <div id="previewScaler" class="preview-scaler">
-        <div id="worksheetPaper" class="worksheet-paper">
-          <svg
-            id="worksheetSVG"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 210 297"
-            aria-label="Предпросмотр прописи"
-            role="img"
-          >
-            <!-- Grid and text are rendered here by app.js -->
-          </svg>
+      <div>
+        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Формат</div>
+        <div class="seg-group" role="group" aria-label="Формат листа" data-sk="format">
+          <button class="seg-btn is-active" data-v="a4"  data-action="fmt-a4" aria-pressed="true">A4</button>
+          <button class="seg-btn"           data-v="a5"  data-action="fmt-a5" aria-pressed="false">A5</button>
         </div>
       </div>
-    </main>
 
-  </div><!-- /.app-shell -->
+      <div>
+        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Ориентация</div>
+        <div class="seg-group" role="group" aria-label="Ориентация" data-sk="orientation">
+          <button class="seg-btn is-active" data-v="portrait"  data-action="ori-portrait"  aria-pressed="true">📄 Книжная</button>
+          <button class="seg-btn"           data-v="landscape" data-action="ori-landscape" aria-pressed="false">🖼 Альбомная</button>
+        </div>
+      </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast no-print" role="alert" aria-live="assertive" aria-atomic="true">
-    <span class="toast-icon" aria-hidden="true">ℹ️</span>
-    <span id="toastMsg">Уведомление</span>
-    <button id="toastClose" class="toast-close" aria-label="Закрыть уведомление">✕</button>
-  </div>
+      <div>
+        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Разлиновка</div>
+        <div class="seg-group" role="group" aria-label="Разлиновка" data-sk="grid" style="flex-wrap:wrap;gap:3px">
+          <button class="seg-btn is-active" data-v="squared"  data-action="grid-squared"  aria-pressed="true">Клетка 5мм</button>
+          <button class="seg-btn"           data-v="frequent" data-action="grid-frequent" aria-pressed="false">Частая косая</button>
+          <button class="seg-btn"           data-v="slanted"  data-action="grid-slanted"  aria-pressed="false">Косая</button>
+          <button class="seg-btn"           data-v="narrow"   data-action="grid-narrow"   aria-pressed="false">Линейка</button>
+          <button class="seg-btn"           data-v="wide"     data-action="grid-wide"     aria-pressed="false">Широкая</button>
+        </div>
+      </div>
 
-  <!-- App Script -->
-  <script src="js/app.js"></script>
+      <div>
+        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Режим написания</div>
+        <div class="seg-group" role="group" aria-label="Режим" data-sk="mode">
+          <button class="seg-btn is-active" data-v="tracing"     data-action="mode-trace" aria-pressed="true">Обводка</button>
+          <button class="seg-btn"           data-v="copy"        data-action="mode-copy"  aria-pressed="false">Списывание</button>
+          <button class="seg-btn"           data-v="alternating" data-action="mode-alt"   aria-pressed="false">Чередование</button>
+        </div>
+      </div>
+    </section>
 
+    <!-- ── Panel: Sentence Analysis ── -->
+    <section class="panel" aria-label="Разбор предложения">
+      <div class="toggle-row">
+        <span class="toggle-label-text">Разбор предложения</span>
+        <label class="toggle-switch" aria-label="Разбор предложения">
+          <input type="checkbox" id="analysisTgl" data-action="toggle-analysis" role="switch">
+          <span class="toggle-track" aria-hidden="true"></span>
+          <span class="toggle-thumb" aria-hidden="true"></span>
+        </label>
+      </div>
+
+      <div id="analysisPills" class="analysis-pills" aria-live="polite">
+        <div class="pills-section">
+          <div class="pills-section-label">Цвет подчёркивания</div>
+          <div class="pills-row" role="group">
+            <button class="pill-btn is-active" data-ac="#0F172A" data-action="ac-black" aria-pressed="true">
+              <span class="pill-dot" style="background:#0F172A"></span>Чёрный
+            </button>
+            <button class="pill-btn" data-ac="#C62828" data-action="ac-red" aria-pressed="false">
+              <span class="pill-dot" style="background:#C62828"></span>Красный
+            </button>
+            <button class="pill-btn" data-ac="#1565C0" data-action="ac-blue" aria-pressed="false">
+              <span class="pill-dot" style="background:#1565C0"></span>Синий
+            </button>
+            <button class="pill-btn" data-ac="#5D4037" data-action="ac-brown" aria-pressed="false">
+              <span class="pill-dot" style="background:#5D4037"></span>Кор.
+            </button>
+          </div>
+        </div>
+        <div class="pills-section">
+          <div class="pills-section-label">Тип члена предложения</div>
+          <div class="pills-row" role="group">
+            <button class="pill-btn is-active" data-aul="solid"   data-action="aul-solid"   aria-pressed="true">_ Подлежащее</button>
+            <button class="pill-btn"           data-aul="double"  data-action="aul-double"  aria-pressed="false">= Сказуемое</button>
+            <button class="pill-btn"           data-aul="wavy"    data-action="aul-wavy"    aria-pressed="false">∿ Определение</button>
+            <button class="pill-btn"           data-aul="dashed"  data-action="aul-dashed"  aria-pressed="false">– Дополнение</button>
+            <button class="pill-btn"           data-aul="dotdash" data-action="aul-dotdash" aria-pressed="false">-·- Обстоят.</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Instruction ── -->
+    <div class="instr-box">
+      Перед печатью: поля <b>«По умолчанию»</b>, включите <b>«Печать фоновой графики»</b>.
+      Для PDF выберите принтер <b>«Сохранить как PDF»</b>.
+    </div>
+
+    <!-- ── Action Buttons ── -->
+    <div class="action-area">
+      <button id="printBtn" class="btn btn-primary" data-action="print-sheet" aria-label="Распечатать лист">
+        <span class="btn-text">🖨 Распечатать лист</span>
+      </button>
+      <button id="pdfBtn" class="btn btn-secondary" data-action="download-pdf" aria-label="Скачать PDF">
+        <span class="btn-text">📄 Скачать PDF</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ══════════════════════════════════════════════
+       PREVIEW
+       ══════════════════════════════════════════════ -->
+  <main class="app-preview" aria-label="Предпросмотр листа">
+    <div id="previewWrap" class="preview-wrap">
+      <div id="worksheetPaper" class="worksheet-paper">
+        <svg id="worksheetSVG"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-label="Лист прописи" role="img">
+          <!-- Rendered by app.js -->
+        </svg>
+      </div>
+    </div>
+  </main>
+
+</div><!-- /.app-shell -->
+
+<!-- Toast -->
+<div id="toast" class="toast no-print" role="alert" aria-live="assertive" aria-atomic="true">
+  <span class="toast-icon" aria-hidden="true">ℹ️</span>
+  <span id="toastMsg">Уведомление</span>
+  <button id="toastClose" class="toast-close" aria-label="Закрыть">✕</button>
+</div>
+
+<script src="js/app.js"></script>
 </body>
 </html>
