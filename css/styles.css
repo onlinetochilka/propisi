@@ -1,480 +1,1688 @@
-/* =========================================================
-   ПРОПИСИ — Design System v2
-   Apple-style · Glassmorphism · 8 States · Clean & Premium
-   ========================================================= */
+/* ═══════════════════════════════════════════════════════════════════════
+   Генератор прописей — дизайн-система «Точилка» × Neumorphism
+   Шаг 1: UI-каркас (без SVG-генерации и экспорта)
+   ═══════════════════════════════════════════════════════════════════════ */
 
-/* ── Google Fonts ────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* ── Local Handwriting Fonts ────────────────────────────── */
+/* ─── Шрифты ─────────────────────────────────────────────────────────── */
 @font-face {
-  font-family: 'Propisi';
-  src: url('../ofont.ru_Propisi.ttf') format('truetype');
-  font-weight: normal; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'ClassRoomCursive';
-  src: url('../ClassRoomCursive.ttf') format('truetype');
-  font-weight: normal; font-style: normal; font-display: swap;
+    font-family: 'Propisi';
+    src: url('../ofont.ru_Propisi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-/* ── Design Tokens ──────────────────────────────────────── */
+@font-face {
+    font-family: 'ClassRoomCursive';
+    src: url('../ClassRoomCursive.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RazerF5';
+    src: url('../dehinted-RazerF5-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ─── Переменные: палитра неоморфизма ───────────────────────────────── */
 :root {
-  /* Brand */
-  --teal:        #006584;
-  --teal-l:      #0087ac;
-  --teal-d:      #00526a;
-  --red:         #B71234;
-  --red-l:       #e02040;
-  --green:       #2e8b57;
+    --bg-color:     #e0e5ec;
+    --shadow-light: #ffffff;
+    --shadow-dark:  #b8c2d1;
 
-  /* Surface */
-  --bg:          #e4e9f2;
-  --surface:     #eef1f7;
-  --white:       #ffffff;
-  --ivory:       #fdfaf5;
-  --panel-bg:    #e8ecf4;
+    --brand-teal:   #006584;
+    --brand-red:    #B71234;
+    --theme-color:  #006584;
 
-  /* Text */
-  --t1:          #111827;
-  --t2:          #374151;
-  --t3:          #6b7280;
-  --t-inv:       #ffffff;
+    --text-main:    #2d3436;
+    --text-muted:   #747d8c;
+    --text-light:   #a0aab8;
 
-  /* Neumorphic shadows (soft, not overdone) */
-  --sh-lt:       #ffffff;
-  --sh-dk:       #b8c4d4;
-  --shadow-out:  6px 6px 14px var(--sh-dk), -6px -6px 14px var(--sh-lt);
-  --shadow-in:   inset 4px 4px 10px var(--sh-dk), inset -4px -4px 10px var(--sh-lt);
-  --shadow-sm:   3px 3px 8px var(--sh-dk), -3px -3px 8px var(--sh-lt);
-  --shadow-sm-in:inset 2px 2px 6px var(--sh-dk), inset -2px -2px 6px var(--sh-lt);
-  --shadow-paper:0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.10), 0 32px 64px rgba(0,0,0,.08);
+    /* Тени (по возрастанию) */
+    --shadow-sm:       4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+    --shadow-sm-inset: inset 3px 3px 8px var(--shadow-dark), inset -3px -3px 8px var(--shadow-light);
+    --shadow-md:       6px 6px 16px var(--shadow-dark), -6px -6px 16px var(--shadow-light);
+    --shadow-md-inset: inset 5px 5px 12px var(--shadow-dark), inset -5px -5px 12px var(--shadow-light);
+    --shadow-lg:       10px 10px 26px var(--shadow-dark), -10px -10px 26px var(--shadow-light);
+    --shadow-xl:       18px 18px 48px var(--shadow-dark), -18px -18px 48px var(--shadow-light);
 
-  /* Colored shadows */
-  --sh-teal:     0 6px 20px rgba(0,101,132,.30), 0 2px 6px rgba(0,101,132,.18);
-  --sh-red:      0 6px 20px rgba(183,18,52,.30),  0 2px 6px rgba(183,18,52,.18);
-  --sh-green:    0 6px 20px rgba(46,139,87,.30),  0 2px 6px rgba(46,139,87,.18);
+    /* Функциональные */
+    --error-glow:   0 0 0 2px var(--brand-red);
+    --focus-ring:   0 0 0 2px var(--brand-teal);
+    --success-glow: 0 0 0 2px #22c55e;
 
-  /* Radii */
-  --r-xs:  6px;  --r-sm: 10px; --r-md: 16px;
-  --r-lg: 22px;  --r-xl: 30px; --r-pill: 999px;
+    /* Типографика */
+    --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Motion — ease-out-quart (premium, silent) */
-  --ease:   cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-in:cubic-bezier(0.5, 0, 0.75, 0);
-  --fast:   130ms; --base: 250ms; --slow: 400ms;
+    /* Радиусы */
+    --radius-card: 2.5rem;
+    --radius-btn:  0.875rem;
+    --radius-inp:  0.625rem;
 
-  /* Focus ring */
-  --ring: 0 0 0 2px var(--teal);
+    /* Скорости переходов */
+    --ease-out:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-std:  0.25s var(--ease-out);
+    --ease-fast: 0.15s var(--ease-out);
 }
 
-/* ── Reset ──────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
+/* ─── Сброс ──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ─── Скроллбары ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--shadow-dark);
+    border-radius: 2px;
+}
+* { scrollbar-width: thin; scrollbar-color: var(--shadow-dark) transparent; }
+
+/* ─── Тело: анти-скролл макет ──────────────────────────────────────── */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px; line-height: 1.5;
-  color: var(--t1); background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden; height: 100dvh;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: clamp(1rem, 2vw, 2rem);
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    transition: background 0.5s ease;
 }
 
-/* ── Layout ─────────────────────────────────────────────── */
-.app-shell {
-  display: flex; height: 100dvh;
+/* ═══════════════════════════════════════════════════════════════════════
+   ПАНЕЛЬ НАСТРОЕК (левая колонка)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.settings-card {
+    width: clamp(320px, 27vw, 400px);
+    min-width: 320px;
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem 1.125rem;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-xl);
+    background: var(--bg-color);
+    overflow: hidden;
 }
 
-/* ─── SIDEBAR ─── */
-.app-sidebar {
-  width: clamp(320px, 26vw, 420px);
-  flex-shrink: 0;
-  display: flex; flex-direction: column;
-  background: var(--bg);
-  overflow-y: auto; overflow-x: hidden;
-  padding: 20px 16px 24px;
-  gap: 12px;
-  border-right: 1px solid rgba(255,255,255,.55);
-  scrollbar-width: thin;
-  scrollbar-color: var(--sh-dk) transparent;
-}
-.app-sidebar::-webkit-scrollbar { width: 4px; }
-.app-sidebar::-webkit-scrollbar-thumb {
-  background: var(--sh-dk); border-radius: var(--r-pill);
+/* ─── Шапка ──────────────────────────────────────────────────────────── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 1.125rem;
+    flex-shrink: 0;
+    position: relative;
 }
 
-/* ─── PREVIEW ─── */
-.app-preview {
-  flex: 1; min-width: 0;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 60% 40%, #cfd8e8 0%, #d6dce8 60%, #c8d2e0 100%);
-  padding: 32px;
-  position: relative;
+.header-logo {
+    width: 44px;
+    height: 44px;
+    filter: drop-shadow(2px 2px 5px var(--shadow-dark)) drop-shadow(-2px -2px 4px var(--shadow-light));
+    flex-shrink: 0;
 }
 
-/* ── Brand Header ───────────────────────────────────────── */
-.brand-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 4px 4px 16px;
-  border-bottom: 1px solid rgba(184,196,212,.35);
-  margin-bottom: 4px;
-}
-.brand-logo { width: 40px; height: 40px; flex-shrink: 0; }
-.brand-title {
-  font-size: 1.15rem; font-weight: 700;
-  color: var(--t1); letter-spacing: -.02em; line-height: 1.2;
-}
-.brand-sub {
-  font-size: .72rem; color: var(--t3); margin-top: 1px;
+.header-text { display: flex; flex-direction: column; }
+.header-title  { font-size: 1.25rem; font-weight: 700; line-height: 1.2; letter-spacing: 0.3px; }
+.header-slogan { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 0.1rem; }
+
+/* ─── Кнопка справки и попап ─────────────────────────────────────────── */
+.help-btn {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-color);
+    box-shadow: var(--shadow-sm);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--ease-fast);
 }
 
-/* ── Panel ──────────────────────────────────────────────── */
-.panel {
-  background: var(--bg);
-  border-radius: var(--r-lg);
-  padding: 14px 14px 16px;
-  box-shadow: var(--shadow-out);
-  display: flex; flex-direction: column; gap: 12px;
-}
-.panel-label {
-  font-size: .68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .07em;
-  color: var(--t3);
+.help-btn:hover {
+    color: var(--text-main);
 }
 
-/* ── Segmented Control (iOS-style) ──────────────────────── */
+.help-btn:active {
+    box-shadow: var(--shadow-sm-inset);
+}
+
+.help-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s var(--ease-out), visibility 0.3s var(--ease-out);
+}
+
+.help-modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.help-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    background: var(--bg-color);
+    box-shadow: var(--shadow-xl);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+    color: var(--text-main);
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s var(--ease-out);
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.help-modal-overlay.is-open .help-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.help-modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--ease-fast);
+}
+
+.help-modal-close:hover {
+    color: var(--brand-red);
+    background: rgba(183, 18, 52, 0.1);
+}
+
+.help-modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    padding-right: 2rem;
+}
+
+.help-modal-body h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--brand-teal);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.help-modal-body h3:first-child {
+    margin-top: 0;
+}
+
+.help-modal-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.help-modal-body li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    padding-left: 1.25rem;
+}
+
+.help-modal-body li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--brand-teal);
+    font-weight: bold;
+}
+
+.help-modal-body b {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* ─── Прокручиваемая область ─────────────────────────────────────────── */
+.settings-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.375rem;
+    padding-left: 3px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--shadow-dark) transparent;
+}
+
+.settings-scroll::-webkit-scrollbar { width: 4px; }
+.settings-scroll::-webkit-scrollbar-track { background: transparent; }
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: var(--shadow-dark);
+    border-radius: 2px;
+}
+
+/* ─── Секции настроек ─────────────────────────────────────────────────── */
+.setting-section {
+    margin-bottom: 1.125rem;
+}
+
+.setting-section:last-child { margin-bottom: 0.25rem; }
+
+.setting-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ПОЛЕ ВВОДА ТЕКСТА (contenteditable — визуально вдавленное окно)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sticky-editor-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    /* Убираем эффект "обрезания" тени сверху/снизу при скролле */
+    box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.05);
+}
+
+.text-input-wrap {
+    position: relative;
+}
+
+.text-editor {
+    display: block;
+    width: 100%;
+    min-height: 110px;
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 0.875rem 1rem;
+    border: none;
+    border-radius: var(--radius-inp);
+    background: linear-gradient(135deg, var(--bg-color) 0%, #ffffff 100%);
+    box-shadow: var(--shadow-sm-inset);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+    cursor: text;
+    transition:
+        box-shadow var(--ease-std),
+        background 0.5s ease;
+}
+
+.text-editor:focus-visible {
+    box-shadow: var(--shadow-md-inset), var(--focus-ring);
+    outline: none;
+}
+
+/* Плейсхолдер через :empty + content */
+.text-editor:empty::before {
+    content: 'Введите текст для прописей…';
+    color: var(--text-light);
+    font-family: var(--font-family);
+    font-size: 0.875rem;
+    pointer-events: none;
+}
+
+/* Hint-тег под полем */
+.input-hint {
+    margin-top: 0.4rem;
+    font-size: 0.68rem;
+    color: var(--text-light);
+    font-weight: 500;
+    line-height: 1.4;
+    padding-left: 2px;
+}
+
+.input-hint b { color: var(--brand-teal); }
+
+/* ─── Кнопка Ударение ──────────────────────────────────────────────── */
+.btn-accent {
+    background: var(--bg-color);
+    border: none;
+    color: var(--text-muted);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family);
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--ease-std);
+    margin-left: auto;
+}
+.btn-accent:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.btn-accent:active {
+    box-shadow: var(--shadow-sm-inset);
+    transform: translateY(0);
+}
+
+/* ─── Справка / Инструкция (Аккордеон) ──────────────────────────────── */
+.help-accordion {
+    margin-top: 0.75rem;
+    background: var(--bg-color);
+    border-radius: var(--radius-inp);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all var(--ease-std);
+}
+.help-accordion summary {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brand-teal);
+    padding: 0.6rem 0.875rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.help-accordion summary::-webkit-details-marker {
+    display: none;
+}
+.help-accordion summary::after {
+    content: '▼';
+    font-size: 0.5rem;
+    color: var(--text-light);
+    transition: transform 0.3s;
+}
+.help-accordion[open] summary::after {
+    transform: rotate(180deg);
+}
+.help-list {
+    margin: 0;
+    padding: 0 1rem 0.875rem 1.8rem;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+.help-list li {
+    margin-bottom: 0.35rem;
+}
+.help-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   СЕГМЕНТИРОВАННЫЕ ПЕРЕКЛЮЧАТЕЛИ (заменяют <select>)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 .seg-group {
-  display: flex;
-  background: var(--bg);
-  border-radius: var(--r-sm);
-  box-shadow: var(--shadow-sm-in);
-  padding: 3px;
-  gap: 2px;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
+
+/* Для 2-колоночной раскладки */
+.seg-group--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+/* Для 3-колоночной раскладки */
+.seg-group--3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+/* Для 2-колоночной раскладки */
+.seg-group--2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
 .seg-btn {
-  flex: 1; min-width: 0;
-  appearance: none; border: none; background: transparent;
-  color: var(--t3); font-family: inherit;
-  font-size: .78rem; font-weight: 500;
-  padding: 6px 4px; border-radius: var(--r-xs);
-  cursor: pointer; text-align: center; line-height: 1.3;
-  white-space: nowrap;
-  transition: background var(--base) var(--ease),
-              color var(--base) var(--ease),
-              box-shadow var(--base) var(--ease),
-              transform var(--fast) var(--ease);
-}
-.seg-btn:hover { color: var(--t2); background: rgba(255,255,255,.45); }
-.seg-btn:active { transform: scale(.96); }
-.seg-btn.is-active {
-  background: var(--bg); color: var(--teal); font-weight: 600;
-  box-shadow: var(--shadow-sm);
-}
-.seg-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; z-index: 1; }
-.seg-btn:disabled { opacity: .35; cursor: not-allowed; pointer-events: none; }
-
-/* ── Editor ─────────────────────────────────────────────── */
-.editor-wrap { display: flex; flex-direction: column; }
-
-.editor-toolbar {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  padding: 8px 10px;
-  background: var(--bg); border-radius: var(--r-sm) var(--r-sm) 0 0;
-  box-shadow: var(--shadow-sm);
-  border-bottom: 1px solid rgba(184,196,212,.25);
-}
-.toolbar-group {
-  display: flex; gap: 3px; align-items: center;
-  padding: 3px 6px; border-radius: var(--r-xs);
-  background: var(--bg); box-shadow: var(--shadow-sm-in);
-}
-.toolbar-label {
-  font-size: .63rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .06em;
-  color: var(--t3); padding-right: 3px; white-space: nowrap;
-}
-.toolbar-btn {
-  width: 26px; height: 26px;
-  appearance: none; border: none; background: transparent;
-  border-radius: var(--r-xs); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .88rem; font-weight: 700; color: var(--t2);
-  transition: background var(--fast) var(--ease),
-              box-shadow var(--fast) var(--ease),
-              transform var(--fast) var(--ease);
-}
-.toolbar-btn:hover {
-  background: rgba(255,255,255,.75);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
-}
-.toolbar-btn:active { transform: scale(.93); }
-.toolbar-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
-.toolbar-btn.lc-active { box-shadow: var(--shadow-sm); background: var(--bg); }
-.color-dot {
-  width: 14px; height: 14px; border-radius: 50%; display: block;
-  box-shadow: 0 1px 3px rgba(0,0,0,.22);
+    background: var(--bg-color);
+    border: none;
+    color: var(--text-muted);
+    padding: 0.55rem 0.5rem;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    line-height: 1.3;
+    text-align: center;
+    /* Запрет на обрезание текста */
+    white-space: normal;
+    overflow: visible;
+    min-width: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    transition:
+        color var(--ease-std),
+        box-shadow var(--ease-std),
+        transform var(--ease-fast),
+        background 0.5s ease;
 }
 
-/* Editor area */
-.editor-area {
-  min-height: 120px; max-height: 240px;
-  overflow-y: auto; padding: 10px 12px;
-  background: var(--bg);
-  border-radius: 0 0 var(--r-sm) var(--r-sm);
-  box-shadow: var(--shadow-sm-in);
-  outline: none; border: 2px solid transparent;
-  font-family: inherit; font-size: .95rem;
-  line-height: 1.55; color: var(--t1);
-  white-space: pre-wrap; word-wrap: break-word;
-  caret-color: var(--teal);
-  transition: border-color var(--base) var(--ease);
-}
-.editor-area:focus { border-color: rgba(0,101,132,.18); }
-.editor-area.is-error {
-  border-color: var(--red) !important;
-  animation: shake .38s var(--ease);
-}
-.editor-area:empty::before {
-  content: attr(data-placeholder); color: var(--t3); pointer-events: none;
+/* Hover */
+.seg-btn:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 
-/* Underline helpers (editor display) */
-.custom-ul { text-decoration-line: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; text-decoration-skip-ink: none; }
-.custom-ul-solid  { text-decoration-style: solid; }
-.custom-ul-double { text-decoration-style: double; text-decoration-thickness: 1px; text-underline-offset: 2px; }
-.custom-ul-wavy   { text-decoration-style: wavy; text-decoration-thickness: 1.5px; }
-.custom-ul-dashed { text-decoration-style: dashed; }
-.custom-ul-dotdash {
-  text-decoration: none !important;
-  background-position: left 0 top .9em;
-  background-size: 100% 2px; background-repeat: repeat-x;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.accent-mark { display: inline-block; width: 0; height: 0; overflow: visible; }
-.accent-mark::after {
-  content: ""; display: block; width: 10px; height: 2px;
-  background: currentColor; border-radius: 2px;
-  transform: translate(-10px, -20px) rotate(-45deg);
+/* Focus visible — синее кольцо для клавиатуры */
+.seg-btn:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+    color: var(--text-main);
 }
 
-/* Hint box */
-.hint-box {
-  font-size: .75rem; color: var(--t3); line-height: 1.5;
-  padding: 8px 10px;
-  background: rgba(0,101,132,.05);
-  border-left: 2px solid var(--teal);
-  border-radius: 0 var(--r-xs) var(--r-xs) 0;
+/* Active press */
+.seg-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md-inset);
 }
-.hint-box b { color: var(--t2); font-weight: 600; }
 
-/* ── Toggle Switch ──────────────────────────────────────── */
-.toggle-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+/* Выбранное состояние */
+.seg-btn.active,
+.seg-btn[aria-pressed="true"] {
+    color: var(--brand-teal);
+    box-shadow: var(--shadow-md-inset);
+    transform: translateY(0);
 }
+
+/* Disabled */
+.seg-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Кнопки с иконкой (ориентация) — иконка и текст в один ряд */
+.seg-btn--icon { flex-direction: row; gap: 6px; align-items: center; }
+.seg-btn--icon svg { width: 16px; height: 16px; flex-shrink: 0; transition: stroke 0.2s ease; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ТУМБЛЕР (переключатель)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
 .toggle-label-text {
-  font-size: .85rem; font-weight: 600; color: var(--t2); user-select: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
-.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+.toggle-switch {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
 .toggle-track {
-  position: absolute; inset: 0;
-  background: var(--bg); border-radius: var(--r-pill);
-  box-shadow: var(--shadow-sm-in); cursor: pointer;
-  transition: background var(--base) var(--ease);
+    position: absolute;
+    inset: 0;
+    border-radius: 9px;
+    background: var(--shadow-dark);
+    box-shadow: var(--shadow-sm-inset);
+    cursor: pointer;
+    transition: background var(--ease-std), box-shadow var(--ease-std);
 }
-.toggle-thumb {
-  position: absolute; top: 3px; left: 3px;
-  width: 18px; height: 18px;
-  background: var(--bg); border-radius: 50%;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--base) var(--ease), background var(--base) var(--ease);
-  pointer-events: none;
-}
-.toggle-switch input:checked ~ .toggle-track {
-  background: linear-gradient(135deg, var(--teal-d), var(--teal));
-  box-shadow: none;
-}
-.toggle-switch input:checked ~ .toggle-thumb {
-  transform: translateX(20px); background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,.22);
-}
-.toggle-switch input:focus-visible ~ .toggle-track { outline: 2px solid var(--teal); outline-offset: 2px; }
 
-/* ── Analysis Pills ─────────────────────────────────────── */
-.analysis-pills {
-  overflow: hidden; max-height: 0; opacity: 0;
-  transition: max-height var(--slow) var(--ease), opacity var(--slow) var(--ease);
+.toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--ease-std);
 }
-.analysis-pills.is-open { max-height: 220px; opacity: 1; }
 
-.pills-section { margin-top: 10px; }
-.pills-section-label {
-  font-size: .65rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--t3); margin-bottom: 6px;
+.toggle-switch input:checked + .toggle-track {
+    background: var(--brand-teal);
+    box-shadow: 0 2px 8px rgba(0, 101, 132, 0.35);
 }
-.pills-row { display: flex; flex-wrap: wrap; gap: 5px; }
 
-.pill-btn {
-  appearance: none; border: none; border-radius: var(--r-pill);
-  padding: 4px 10px; font-family: inherit;
-  font-size: .72rem; font-weight: 600; cursor: pointer;
-  background: var(--bg); color: var(--t2);
-  box-shadow: var(--shadow-sm);
-  display: flex; align-items: center; gap: 5px;
-  transition: box-shadow var(--base) var(--ease),
-              transform var(--fast) var(--ease),
-              color var(--base) var(--ease);
+.toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(14px);
 }
-.pill-btn:hover { box-shadow: var(--shadow-out); transform: translateY(-1px); }
-.pill-btn:active { transform: scale(.95); }
-.pill-btn.is-active { box-shadow: var(--shadow-sm-in); color: var(--teal); }
-.pill-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-.pill-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
-/* ── Buttons ────────────────────────────────────────────── */
+.toggle-switch input:focus-visible + .toggle-track {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ЧЕКБОКС (кастомный неоморфный)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.25rem 0;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox-box {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: var(--bg-color);
+    box-shadow: var(--shadow-sm-inset);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow var(--ease-std), background var(--ease-std);
+}
+
+.checkbox-box svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--brand-teal);
+    opacity: 0;
+    transition: opacity var(--ease-fast), transform var(--ease-fast);
+    transform: scale(0.6);
+}
+
+.checkbox-wrap input:checked + .checkbox-box {
+    background: var(--bg-color);
+    box-shadow: var(--shadow-sm-inset);
+}
+
+.checkbox-wrap input:checked + .checkbox-box svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.checkbox-wrap input:focus-visible + .checkbox-box {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.checkbox-text {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ТУМБЛЕР «РАЗБОР ПРЕДЛОЖЕНИЯ» + РАСКРЫВАЮЩАЯСЯ ПАНЕЛЬ
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sentence-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.65rem 0.875rem;
+    border: none;
+    border-radius: var(--radius-btn);
+    background: var(--bg-color);
+    color: var(--text-muted);
+    font-family: var(--font-family);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    user-select: none;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    transition:
+        color var(--ease-std),
+        box-shadow var(--ease-std),
+        transform var(--ease-fast);
+}
+
+.sentence-toggle-btn:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.sentence-toggle-btn:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+    color: var(--text-main);
+}
+
+.sentence-toggle-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md-inset);
+}
+
+.sentence-toggle-btn.active {
+    color: var(--brand-teal);
+    box-shadow: var(--shadow-md-inset);
+}
+
+/* Иконка-стрелка */
+.sentence-toggle-btn .chevron-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    transition: transform 0.35s var(--ease-out);
+}
+
+.sentence-toggle-btn.active .chevron-icon {
+    transform: rotate(180deg);
+}
+
+/* Раскрывающаяся панель */
+.sentence-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition:
+        max-height 0.45s var(--ease-out),
+        opacity 0.35s ease,
+        margin-top 0.35s ease;
+    margin-top: 0;
+}
+
+.sentence-panel.open {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 0.625rem;
+}
+
+.sentence-panel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.25rem 0.125rem;
+}
+
+/* Подзаголовки внутри панели */
+.panel-sublabel {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+/* ─── Цветовые образцы (для цвета текста/линии) ────────────────────── */
+.color-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.color-swatch {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: var(--swatch-bg, #94a3b8);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    flex-shrink: 0;
+    margin: 4px; /* Фикс обрезания тени */
+    transition:
+        transform var(--ease-fast),
+        box-shadow var(--ease-std);
+}
+
+.color-swatch:hover {
+    transform: scale(1.2) translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.color-swatch:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.color-swatch:active { transform: scale(1.0); }
+
+.color-swatch.active {
+    box-shadow:
+        var(--shadow-sm-inset),
+        0 0 0 2.5px var(--bg-color),
+        0 0 0 4.5px var(--brand-teal);
+    transform: scale(1.05);
+}
+
+/* Мини-палитра под редактором */
+.mini-color-palette {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+    align-items: center;
+}
+.color-swatch.mini {
+    width: 20px;
+    height: 20px;
+}
+
+/* ─── Кнопки морфем (Состав слова) ──────────────────────────────────── */
+.morph-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.grid-2x3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+}
+.morph-btn {
+    background: var(--bg-color);
+    border: none;
+    color: var(--text-muted);
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--ease-std), box-shadow var(--ease-std), transform var(--ease-fast);
+}
+.morph-btn:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.morph-btn:active {
+    box-shadow: var(--shadow-sm-inset);
+    transform: translateY(0);
+}
+.morph-btn:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+/* ─── Кнопки подчеркиваний ──────────────────────────────────────────── */
+
+/* Группа подчеркиваний — горизонтальная */
+.underline-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.ul-btn {
+    background: var(--bg-color);
+    border: none;
+    color: var(--text-muted);
+    padding: 0.45rem 0.65rem;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    user-select: none;
+    transition:
+        color var(--ease-std),
+        box-shadow var(--ease-std),
+        transform var(--ease-fast);
+}
+
+.ul-btn:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.ul-btn:active {
+    box-shadow: var(--shadow-md-inset);
+    transform: translateY(0);
+}
+
+.ul-btn:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+    color: var(--text-main);
+}
+
+/* Демонстрационная линия — ТОЛЬКО border-bottom, никаких зачёркиваний */
+.ul-sample {
+    display: inline-block;
+    width: 28px;
+    line-height: 1;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+/* Подчеркивание одной чертой (подлежащее) */
+.ul-sample--solid {
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 2px;
+}
+
+/* Двойная черта (сказуемое) — border-bottom + box-shadow снизу */
+.ul-sample--double {
+    border-bottom: 1px solid currentColor;
+    box-shadow: 0 3px 0 0 currentColor;
+    padding-bottom: 2px;
+}
+
+/* Волнистая (определение) */
+.ul-sample--wavy {
+    text-decoration: underline wavy currentColor;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1.5px;
+    padding-bottom: 2px;
+}
+
+/* Пунктир (дополнение) */
+.ul-sample--dashed {
+    border-bottom: 2px dashed currentColor;
+    padding-bottom: 2px;
+}
+
+/* Штрих-пунктир (обстоятельство) */
+.ul-sample--dotdash {
+    border-bottom: 2px dotted currentColor;
+    padding-bottom: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ЧИСЛОВОЙ ИНПУТ (вдавленный)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sub-input {
+    background: var(--bg-color);
+    border: none;
+    width: 3.6rem;
+    padding: 0.45rem 0.375rem;
+    text-align: center;
+    border-radius: var(--radius-inp);
+    color: var(--brand-teal);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    font-weight: 700;
+    outline: none;
+    box-shadow: var(--shadow-sm-inset);
+    flex-shrink: 0;
+    transition:
+        box-shadow var(--ease-std),
+        color var(--ease-std),
+        background 0.5s ease;
+}
+
+.sub-input:hover { box-shadow: var(--shadow-md-inset); }
+
+.sub-input:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+    box-shadow: var(--shadow-sm-inset);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   КНОПКИ ДЕЙСТВИЙ (футер панели)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.action-footer {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    flex-shrink: 0;
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    background: var(--bg-color);
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    box-shadow: 0 -10px 20px var(--bg-color);
+}
+
+.download-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-wrapper > .btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+}
+
+/* Popover-меню скачать */
+.download-menu {
+    position: fixed;
+    margin: 0;
+    top: auto;
+    padding: 0.375rem;
+    border: none;
+    border-radius: var(--radius-btn);
+    background: var(--bg-color);
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+        opacity 0.2s var(--ease-out),
+        transform 0.2s var(--ease-out),
+        display 0.2s allow-discrete,
+        overlay 0.2s allow-discrete;
+}
+
+.download-menu:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: var(--shadow-xl);
+    z-index: 9999;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@starting-style {
+    .download-menu:popover-open {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+.download-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    border: none;
+    border-radius: calc(var(--radius-btn) - 3px);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-family);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--ease-fast), color var(--ease-fast);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.download-option:hover {
+    background: var(--shadow-dark);
+    color: var(--text-main);
+}
+
+.download-option:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.download-option svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ─── Общий класс .btn ──────────────────────────────────────────────── */
 .btn {
-  appearance: none; border: none; border-radius: var(--r-md);
-  font-family: inherit; font-size: .88rem; font-weight: 600;
-  cursor: pointer; display: inline-flex; align-items: center;
-  justify-content: center; gap: 7px; padding: 11px 20px;
-  transition: box-shadow var(--base) var(--ease),
-              transform var(--fast) var(--ease),
-              background var(--base) var(--ease),
-              opacity var(--base) var(--ease);
-  position: relative; overflow: hidden; white-space: nowrap;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.875rem 0.5rem;
+    border: none;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    transition:
+        box-shadow var(--ease-std),
+        transform var(--ease-fast),
+        background 0.5s ease,
+        color var(--ease-std);
 }
-.btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-.btn:disabled { opacity: .38; cursor: not-allowed; pointer-events: none; }
 
-/* Primary */
-.btn-primary {
-  background: linear-gradient(145deg, var(--teal-l), var(--teal-d));
-  color: var(--t-inv); box-shadow: var(--sh-teal);
-}
-.btn-primary:hover { box-shadow: 0 10px 28px rgba(0,101,132,.40); transform: translateY(-2px); }
-.btn-primary:active { transform: scale(.98); box-shadow: var(--sh-teal); }
+.btn svg { width: 15px; height: 15px; flex-shrink: 0; stroke-width: 2.2; }
 
-/* Secondary */
+/* ── Вторичная (Скачать) ─────────────────────────────────────────────── */
 .btn-secondary {
-  background: var(--bg); color: var(--t2); box-shadow: var(--shadow-sm);
-}
-.btn-secondary:hover { box-shadow: var(--shadow-out); transform: translateY(-1px); color: var(--teal); }
-.btn-secondary:active { transform: scale(.97); box-shadow: var(--shadow-sm-in); }
-
-/* States */
-.btn.is-loading { pointer-events: none; opacity: .82; }
-.btn.is-loading .btn-text { opacity: 0; }
-.btn.is-loading::after {
-  content: ''; position: absolute;
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,.35);
-  border-top-color: #fff; border-radius: 50%;
-  animation: spin .65s linear infinite;
-}
-.btn-secondary.is-loading::after {
-  border-color: rgba(0,101,132,.25); border-top-color: var(--teal);
-}
-.btn.is-success {
-  background: linear-gradient(145deg, #38a169, #276749);
-  box-shadow: var(--sh-green);
-}
-.btn.is-error {
-  background: linear-gradient(145deg, var(--red-l), var(--red));
-  box-shadow: var(--sh-red);
-  animation: shake .38s var(--ease);
+    background: var(--bg-color);
+    color: var(--text-muted);
+    box-shadow: var(--shadow-md);
 }
 
-.action-area {
-  display: flex; flex-direction: column; gap: 8px; padding-top: 2px;
+.btn-secondary:hover {
+    color: var(--text-main);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
-.action-area .btn { width: 100%; }
 
-/* ── Instruction box ────────────────────────────────────── */
-.instr-box {
-  font-size: .75rem; color: var(--t3); line-height: 1.55;
-  padding: 10px 12px;
-  background: rgba(0,101,132,.04);
-  border-left: 2px solid rgba(0,101,132,.35);
-  border-radius: 0 var(--r-xs) var(--r-xs) 0;
+.btn-secondary:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+    color: var(--text-main);
 }
-.instr-box b { color: var(--t2); font-weight: 600; }
 
-/* ── Toast ──────────────────────────────────────────────── */
-.toast {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--bg); border-radius: var(--r-lg);
-  box-shadow: var(--shadow-out), 0 0 0 1px rgba(255,255,255,.6);
-  padding: 12px 20px;
-  font-size: .84rem; font-weight: 600; color: var(--t1);
-  display: flex; align-items: center; gap: 9px; z-index: 9000;
-  opacity: 0; pointer-events: none; max-width: calc(100vw - 48px);
-  transition: transform var(--slow) var(--ease), opacity var(--slow) var(--ease);
+.btn-secondary:active,
+.btn-secondary.active-press {
+    box-shadow: var(--shadow-md-inset);
+    transform: translateY(0);
+    color: var(--brand-teal);
 }
-.toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-.toast-icon { font-size: 1.1rem; flex-shrink: 0; }
-.toast.t-error  { border-left: 3px solid var(--red); }
-.toast.t-ok     { border-left: 3px solid var(--green); }
-.toast-close {
-  appearance: none; border: none; background: transparent;
-  cursor: pointer; color: var(--t3); font-size: 1rem; padding: 1px 4px;
-  border-radius: var(--r-xs); margin-left: 6px;
-  transition: color var(--fast) var(--ease);
-}
-.toast-close:hover { color: var(--t1); }
-.toast-close:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
 
-/* ── Worksheet ──────────────────────────────────────────── */
+.btn-secondary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Первичная (Распечатать) ─────────────────────────────────────────── */
+.btn-primary {
+    background: var(--brand-teal);
+    color: #ffffff;
+    box-shadow: 6px 6px 20px rgba(0,101,132,0.38), -4px -4px 14px var(--shadow-light);
+}
+
+.btn-primary:hover {
+    box-shadow: 8px 8px 26px rgba(0,101,132,0.48), -4px -4px 14px var(--shadow-light);
+    transform: translateY(-1px);
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.btn-primary:active,
+.btn-primary.active-press {
+    box-shadow: inset 4px 4px 12px rgba(0,0,0,0.22), inset -3px -3px 8px rgba(255,255,255,0.12);
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ПРАВАЯ ПАНЕЛЬ: ПРЕВЬЮ
+   ═══════════════════════════════════════════════════════════════════════ */
+
 .preview-wrap {
-  display: flex; align-items: flex-start; justify-content: center;
-  width: 100%; height: 100%; padding-top: 16px;
-  overflow: hidden;
-}
-.worksheet-paper {
-  background: var(--ivory);
-  box-shadow: var(--shadow-paper);
-  border-radius: 2px;
-  overflow: hidden; flex-shrink: 0;
-  transform-origin: top center;
-}
-#worksheetSVG { display: block; }
-
-/* ── Animations ─────────────────────────────────────────── */
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  15%  { transform: translateX(-5px); }
-  30%  { transform: translateX(4px); }
-  45%  { transform: translateX(-3px); }
-  60%  { transform: translateX(2px); }
-  80%  { transform: translateX(-1px); }
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Responsive ─────────────────────────────────────────── */
-@media (max-width: 1060px) {
-  body { overflow: auto; }
-  .app-shell { flex-direction: column; height: auto; min-height: 100dvh; }
-  .app-sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,.5); overflow-y: visible; }
-  .app-preview { min-height: 70vw; }
-}
-@media (max-width: 600px) {
-  .seg-btn { font-size: .7rem; padding: 5px 4px; }
-  .toolbar-btn { width: 23px; height: 23px; font-size: .8rem; }
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-/* ── Print ──────────────────────────────────────────────── */
+/* Белый лист А4 с мягкой тенью */
+.a4-sheet {
+    background: #ffffff;
+    aspect-ratio: 210 / 297; /* Книжная А4 */
+    height: 100%;
+    max-height: 85vh;
+    width: auto;
+    border-radius: 3px;
+    box-shadow:
+        0 4px 6px rgba(184,194,209,0.4),
+        0 10px 30px rgba(184,194,209,0.7),
+        0 -2px 4px rgba(255,255,255,0.8);
+    transition:
+        aspect-ratio 0.4s var(--ease-out),
+        box-shadow 0.3s ease;
+    /* Контент листа пока пустой — плейсхолдер */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Плейсхолдер-текст внутри листа */
+.a4-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #d4dce8;
+    user-select: none;
+    pointer-events: none;
+}
+
+.a4-placeholder svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.4;
+}
+
+.a4-placeholder p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #c4cdd8;
+}
+
+/* ─── SVG превью (инжектируется через render()) ──────────────────── */
+
+/* Когда SVG внутри — убираем flex-центрирование плейсхолдера */
+.a4-sheet:has(svg#previewSvg) {
+    display: block;
+    padding: 0;
+}
+
+/* Сам SVG-лист: заполняет контейнер без зазоров */
+#previewSvg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Сохраняем мягкую тень листа — теперь на SVG */
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GLASS DRAWER (выезжающая шторка с рекламой приложений Точилки)
+   Прикреплена к левой панели
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.glass-drawer {
+    --drawer-tab-w: 40px;
+    --drawer-panel-w: 290px;
+    --glass-bg: rgba(255, 255, 255, 0.38);
+    --glass-border: rgba(255, 255, 255, 0.72);
+    --glass-shine: inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    --glass-depth: inset 0 -12px 28px rgba(255, 255, 255, 0.28);
+    --glass-glow: inset 2px 2px 12px rgba(255, 255, 255, 0.42);
+
+    position: absolute;
+    z-index: 1;
+    right: calc(-1 * var(--drawer-tab-w));
+    top: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: calc(var(--drawer-panel-w) + var(--drawer-tab-w));
+    height: min(340px, 55vh);
+    min-height: 180px;
+    max-height: 340px;
+    /* Ярлычок торчит из правого края, панель прячется ЗА левой колонкой */
+    transform: translateY(-50%) translateX(0);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.5s ease,
+                visibility 0.5s ease;
+    will-change: transform;
+    pointer-events: auto;
+}
+
+/* Панель открывается по клику на ярлычок */
+.glass-drawer.is-open {
+    transform: translateY(-50%) translateX(var(--drawer-panel-w));
+}
+
+.glass-drawer__panel {
+    flex: 1 1 auto;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px 0 0 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(36px) saturate(1.8);
+    -webkit-backdrop-filter: blur(36px) saturate(1.8);
+    border: 1px solid var(--glass-border);
+    border-right: none;
+    box-shadow:
+        var(--glass-shine),
+        var(--glass-depth),
+        var(--glass-glow),
+        0 8px 32px rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.glass-drawer.is-open .glass-drawer__panel {
+    pointer-events: auto;
+}
+
+.glass-drawer__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.glass-drawer__scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.glass-drawer__card {
+    flex-shrink: 0;
+    width: 100%;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(16px) saturate(1.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6);
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-drawer__card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.58);
+    box-shadow:
+        0 8px 22px rgba(255, 255, 255, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.glass-drawer__card:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.glass-drawer__all-btn {
+    flex-shrink: 0;
+    width: 100%;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 16px;
+    background: rgba(0, 101, 132, 0.65);
+    backdrop-filter: blur(16px) saturate(1.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 101, 132, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-drawer__all-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 101, 132, 0.8);
+    box-shadow:
+        0 8px 22px rgba(0, 101, 132, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.glass-drawer__all-btn:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+.glass-drawer__tab {
+    flex: 0 0 var(--drawer-tab-w);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 6px;
+    border-radius: 0 18px 18px 0;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+    color: var(--text-main);
+    background: var(--glass-bg);
+    backdrop-filter: blur(36px) saturate(1.8);
+    -webkit-backdrop-filter: blur(36px) saturate(1.8);
+    border: 1px solid var(--glass-border);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    user-select: none;
+    white-space: nowrap;
+    pointer-events: auto;
+    cursor: pointer;
+    box-shadow:
+        var(--glass-shine),
+        var(--glass-depth),
+        var(--glass-glow),
+        4px 0 24px rgba(255, 255, 255, 0.14);
+    transition: background 0.2s ease;
+}
+
+.glass-drawer__tab:hover {
+    background: rgba(255, 255, 255, 0.52);
+}
+
+.glass-drawer__tab:focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 2px;
+}
+
+@media (max-width: 1023px) {
+    .glass-drawer { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   WYSIWYG ТУЛБАР
+   ═══════════════════════════════════════════════════════════════════════ */
+.wysiwyg-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    background: var(--bg-color);
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-inp) var(--radius-inp) 0 0;
+    box-shadow: inset 0 -1px 0 var(--shadow-dark);
+}
+
+.text-input-wrap .text-editor {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--shadow-dark);
+    opacity: 0.5;
+}
+
+.toolbar-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0 !important;
+    border-radius: 0.4rem;
+}
+
+.toolbar-btn .ul-sample {
+    width: 16px;
+    font-size: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SMART MENU (Плавающее контекстное меню)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#smartMenu {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    background: var(--bg-color);
+    border-radius: var(--radius-btn);
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    transition:
+        opacity var(--ease-fast),
+        visibility var(--ease-fast),
+        transform var(--ease-fast);
+    transform: translateY(10px) scale(0.98);
+}
+
+#smartMenu.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+#smartMenu .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#smartMenu .toolbar-divider {
+    width: 2px;
+    height: 18px;
+    background: var(--shadow-dark);
+    margin: 0 0.25rem;
+    border-radius: 1px;
+    box-shadow: 1px 1px 2px var(--shadow-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   АНИМАЦИИ
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shakeInput {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-4px); }
+    40%       { transform: translateX(4px); }
+    60%       { transform: translateX(-3px); }
+    80%       { transform: translateX(3px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   АДАПТИВ
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* На узких экранах — скрыть glass-drawer */
+@media (max-width: 1023px) {
+    .glass-drawer { display: none !important; }
+}
+
+@media (max-height: 700px) {
+    .settings-card { padding: 1.125rem 1.125rem 0.875rem; }
+    .header { margin-bottom: 0.75rem; }
+    .header-logo { width: 36px; height: 36px; }
+    .header-title { font-size: 1.1rem; }
+    .setting-section { margin-bottom: 0.875rem; }
+    .text-editor { min-height: 80px; max-height: 120px; }
+}
+
+/* На мобильных — вертикальная раскладка */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+    .settings-card {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        max-height: none;
+    }
+    .settings-scroll {
+        overflow-y: visible;
+        max-height: none;
+    }
+    .preview-wrap {
+        height: 75vw;
+        max-height: 85vh;
+        flex-shrink: 0;
+    }
+    .a4-sheet {
+        max-height: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ПЕЧАТЬ
+   ═══════════════════════════════════════════════════════════════════════ */
+
 @media print {
-  body { overflow: visible; height: auto; background: none !important; }
-  .no-print { display: none !important; }
-  .app-shell { display: block; }
-  .app-preview { display: block !important; padding: 0 !important; background: none !important; }
-  .preview-wrap { display: block; padding: 0; }
-  .worksheet-paper {
-    box-shadow: none !important; border-radius: 0 !important;
-    transform: none !important; width: var(--pw) !important; height: var(--ph) !important;
-  }
-  #worksheetSVG { width: var(--pw) !important; height: var(--ph) !important; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: none;
+    }
+    .settings-card,
+    .glass-drawer { display: none !important; }
+    .preview-wrap {
+        width: 100%;
+        height: 100%;
+        display: block;
+        padding: 0;
+        margin: 0;
+    }
+    .a4-sheet {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+        aspect-ratio: auto !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ПОДНАСТРОЙКИ (Зеркальные поля и др.)
+   ═══════════════════════════════════════════════════════════════════════ */
+.layout-sub-settings {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-top: 0;
+    transition:
+        max-height 0.45s var(--ease-out),
+        opacity 0.35s ease,
+        margin-top 0.35s ease;
+}
+
+.layout-sub-settings.open {
+    max-height: 100px;
+    opacity: 1;
+    margin-top: 0.75rem;
 }

@@ -1,235 +1,401 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Прописи — Генератор рабочих листов | Точилка</title>
-  <meta name="description" content="Генератор прописей для школьников. Листы с клеткой (ГОСТ 5мм), линейкой и косой линией для обводки, списывания и тренировки почерка.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Генератор прописей — создавайте красивые листы для тренировки почерка с разлиновкой, подчёркиваниями и разбором предложений.">
+    <title>Точилка | Идеальная тетрадь</title>
 
-  <!-- Yandex Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- Внешняя дизайн-система Точилки (базовые токены и глобальные стили) -->
+    <link rel="preload" href="https://raw.githubusercontent.com/onlinetochilka/theme/main/tochilka-logo.svg" as="image" type="image/svg+xml">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/onlinetochilka/theme/main/tochilka-theme.css">
 
-  <!-- Yandex Metrica -->
-  <script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(109849947,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/109849947" style="position:absolute;left:-9999px" alt=""></div></noscript>
+    <!-- Локальный CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Tochilka base theme -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-theme.css">
-
-  <!-- App styles -->
-  <link rel="stylesheet" href="css/styles.css">
-
-  <link rel="preload" href="ofont.ru_Propisi.ttf"  as="font" type="font/truetype" crossorigin>
-  <link rel="preload" href="ClassRoomCursive.ttf"   as="font" type="font/truetype" crossorigin>
+       ym(109849947, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109849947" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
-
 <body class="tochilka-theme">
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<div class="app-shell">
+    <!-- ══════════════════════════════════════════════════════════════════
+         ЛЕВАЯ ПАНЕЛЬ НАСТРОЕК
+         ══════════════════════════════════════════════════════════════════ -->
+    <div class="settings-wrapper" style="position: relative; display: flex; height: 100%; flex-shrink: 0; z-index: 10;">
+        <aside class="settings-card" role="complementary" aria-label="Панель настроек прописей" style="position: relative; z-index: 2;">
 
-  <!-- ══════════════════════════════════════════════
-       SIDEBAR
-       ══════════════════════════════════════════════ -->
-  <aside class="app-sidebar no-print" aria-label="Панель управления">
+        <!-- Шапка -->
+        <header class="header">
+            <img
+                src="https://raw.githubusercontent.com/onlinetochilka/theme/main/tochilka-logo.svg"
+                class="header-logo"
+                alt="Логотип Точилки"
+                width="44" height="44"
+            >
+            <div class="header-text">
+                <h1 class="header-title">Идеальная тетрадь</h1>
+                <div class="header-slogan">Создавайте прописи, памятки и образцы разборов</div>
+            </div>
+            
+            <!-- Кнопка справки -->
+            <button class="help-btn" id="helpBtn" aria-label="Справка" title="Справка">?</button>
+            
+        </header>
 
-    <!-- Brand -->
-    <header class="brand-header">
-      <img src="https://cdn.jsdelivr.net/gh/onlinetochilka/theme@main/tochilka-logo.svg"
-           alt="Точилка" class="brand-logo" width="40" height="40">
-      <div>
-        <h1 class="brand-title">Генератор прописей</h1>
-        <p class="brand-sub">Тренировка красивого почерка</p>
-      </div>
-    </header>
+        <!-- ── Прокручиваемая зона настроек ─────────────────────────── -->
+        <div class="settings-scroll">
 
-    <!-- ── Panel: Editor ── -->
-    <section class="panel" aria-label="Текст прописи">
-      <div class="panel-label">Текст прописи</div>
+            <!-- ── 1. Поле ввода текста ─────────────────────────────── -->
+            <div class="sticky-editor-wrap">
+                <section class="setting-section" style="margin-bottom: 0;">
+                    <div class="setting-label" id="textInputLabel" style="margin-bottom: 0.35rem;">Текст для прописей</div>
+                    
+                    <div class="wysiwyg-toolbar" role="toolbar" aria-label="Панель форматирования">
+                        <!-- Группа 1 (Цвета) -->
+                        <div class="toolbar-group" id="toolbarColorGroup">
+                            <button class="color-swatch toolbar-btn active" data-color="#0F172A" style="--swatch-bg: #0F172A" aria-label="Чёрный" title="Чёрный" aria-pressed="true"></button>
+                            <button class="color-swatch toolbar-btn" data-color="#C62828" style="--swatch-bg: #C62828" aria-label="Красный" title="Красный" aria-pressed="false"></button>
+                            <button class="color-swatch toolbar-btn" data-color="#2E7D32" style="--swatch-bg: #2E7D32" aria-label="Зелёный" title="Зелёный" aria-pressed="false"></button>
+                            <button class="color-swatch toolbar-btn" data-color="#1565C0" style="--swatch-bg: #1565C0" aria-label="Синий" title="Синий" aria-pressed="false"></button>
+                            <button class="color-swatch toolbar-btn" data-color="#6A1B9A" style="--swatch-bg: #6A1B9A" aria-label="Фиолетовый" title="Фиолетовый" aria-pressed="false"></button>
+                        </div>
 
-      <div class="editor-wrap">
-        <!-- Toolbar -->
-        <div class="editor-toolbar" role="toolbar" aria-label="Форматирование">
+                        <div class="toolbar-divider"></div>
 
-          <!-- Text color -->
-          <div class="toolbar-group" role="group" aria-label="Цвет текста">
-            <span class="toolbar-label" aria-hidden="true">Текст</span>
-            <button class="toolbar-btn tbtn" data-tc="#0F172A" data-action="tc-black"  title="Чёрный"  aria-label="Чёрный"><span class="color-dot" style="background:#0F172A"></span></button>
-            <button class="toolbar-btn tbtn" data-tc="#C62828" data-action="tc-red"    title="Красный" aria-label="Красный"><span class="color-dot" style="background:#C62828"></span></button>
-            <button class="toolbar-btn tbtn" data-tc="#2E7D32" data-action="tc-green"  title="Зелёный" aria-label="Зелёный"><span class="color-dot" style="background:#2E7D32"></span></button>
-            <button class="toolbar-btn tbtn" data-tc="#1565C0" data-action="tc-blue"   title="Синий"   aria-label="Синий"><span class="color-dot" style="background:#1565C0"></span></button>
-          </div>
+                        <!-- Группа 4 (Действия) -->
+                        <div class="toolbar-group" style="margin-left: auto;">
+                            <button id="btnAccent" class="btn-accent toolbar-btn" style="margin:0;" title="Поставить ударение">´</button>
+                            <button id="btnClearFormat" class="btn-accent toolbar-btn" style="margin:0;font-size:0.8rem;" title="Очистить формат">🧹</button>
+                        </div>
+                    </div>
 
-          <!-- Line color -->
-          <div class="toolbar-group" role="group" aria-label="Цвет линии">
-            <span class="toolbar-label" aria-hidden="true">Линия</span>
-            <button class="toolbar-btn tbtn lc-active" data-lc="#0F172A" data-action="lc-black"  title="Чёрный"  aria-label="Чёрный" aria-pressed="true"><span class="color-dot" style="background:#0F172A"></span></button>
-            <button class="toolbar-btn tbtn" data-lc="#C62828" data-action="lc-red"    title="Красный" aria-label="Красный" aria-pressed="false"><span class="color-dot" style="background:#C62828"></span></button>
-            <button class="toolbar-btn tbtn" data-lc="#2E7D32" data-action="lc-green"  title="Зелёный" aria-label="Зелёный" aria-pressed="false"><span class="color-dot" style="background:#2E7D32"></span></button>
-            <button class="toolbar-btn tbtn" data-lc="#1565C0" data-action="lc-blue"   title="Синий"   aria-label="Синий" aria-pressed="false"><span class="color-dot" style="background:#1565C0"></span></button>
-          </div>
+                    <div class="text-input-wrap">
+                        <div
+                            id="textEditor"
+                            class="text-editor"
+                            contenteditable="true"
+                            role="textbox"
+                            aria-multiline="true"
+                            aria-labelledby="textInputLabel"
+                            spellcheck="false"
+                            data-placeholder="Введите текст для прописей…"
+                        ><div>Аа Бб Вв 1 2 3 4 5</div><div><br></div><div>Пишу красиво и легко.</div><div><br></div><div>С Точилкой всё сходится!</div></div>
+                    </div>
+                </section>
+            </div>
 
-          <!-- Underline types -->
-          <div class="toolbar-group" role="group" aria-label="Подчёркивание">
-            <button class="toolbar-btn tbtn" data-ul="solid"   data-action="ul-solid"   title="Подлежащее (_)" aria-label="Одна черта">_</button>
-            <button class="toolbar-btn tbtn" data-ul="double"  data-action="ul-double"  title="Сказуемое (=)" aria-label="Двойная">=</button>
-            <button class="toolbar-btn tbtn" data-ul="wavy"    data-action="ul-wavy"    title="Определение (∿)" aria-label="Волнистая">∿</button>
-            <button class="toolbar-btn tbtn" data-ul="dashed"  data-action="ul-dashed"  title="Дополнение (- -)" aria-label="Пунктир">- -</button>
-            <button class="toolbar-btn tbtn" data-ul="dotdash" data-action="ul-dotdash" title="Обстоятельство (-·-)" aria-label="Пунктир-точка">-·-</button>
-          </div>
+            <!-- ── 4. Разлиновка ─────────────────────────────────────── -->
+            <section class="setting-section">
+                <div class="setting-label" style="display: flex; justify-content: space-between; align-items: center;">
+                    Разлиновка
+                    <label class="checkbox-wrap" id="mathModeLabel" style="display: none; margin: 0;">
+                        <input type="checkbox" id="mathModeCheck">
+                        <span class="checkbox-box" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 5,9.5 10.5,2.5"/></svg></span>
+                        <span class="checkbox-text" style="text-transform: none; font-size: 0.65rem;">1 символ = 1 клетка</span>
+                    </label>
+                </div>
+                <nav
+                    class="seg-group seg-group--grid"
+                    role="group"
+                    aria-label="Тип разлиновки"
+                    id="gridTypeGroup"
+                >
+                    <button
+                        class="seg-btn active"
+                        data-value="frequent"
+                        aria-pressed="true"
+                    >Частая косая<br><small>(1 класс)</small></button>
+                    <button
+                        class="seg-btn"
+                        data-value="slanted"
+                        aria-pressed="false"
+                    >Редкая косая</button>
+                    <button
+                        class="seg-btn"
+                        data-value="narrow"
+                        aria-pressed="false"
+                    >Узкая линия</button>
+                    <button
+                        class="seg-btn"
+                        data-value="wide"
+                        aria-pressed="false"
+                    >Широкая линия</button>
+                    <button
+                        class="seg-btn"
+                        data-value="squared"
+                        aria-pressed="false"
+                    >Клетка</button>
+                    <button
+                        class="seg-btn"
+                        data-value="large_squared"
+                        aria-pressed="false"
+                    >Крупная клетка</button>
+                </nav>
+            </section>
 
-          <!-- Clear -->
-          <div class="toolbar-group">
-            <button id="clearFmtBtn" class="toolbar-btn" data-action="clear-fmt" title="Очистить формат" aria-label="Очистить формат">🧹</button>
-          </div>
-        </div>
+            <!-- ── 5. Режим написания ────────────────────────────────── -->
+            <section class="setting-section">
+                <div class="setting-label">Как пишем буквы?</div>
+                <nav
+                    class="seg-group seg-group--grid"
+                    role="group"
+                    aria-label="Режим написания"
+                    id="writingModeGroup"
+                >
+                    <button
+                        class="seg-btn active"
+                        data-value="tracing"
+                        aria-pressed="true"
+                    >Светлые<br><small>(обводка)</small></button>
+                    <button
+                        class="seg-btn"
+                        data-value="copy"
+                        aria-pressed="false"
+                    >Тёмные<br><small>(списывание)</small></button>
+                </nav>
+            </section>
 
-        <!-- Contenteditable -->
-        <div id="textEditor"
-             class="editor-area"
-             contenteditable="true"
-             role="textbox"
-             aria-multiline="true"
-             aria-label="Введите текст прописи"
-             data-placeholder="Введите текст прописи..."
-             spellcheck="true"
-        ><div>Аа Бб Вв Гг Дд</div><div>Пишу красиво и легко.</div><div>Задача №5.</div><div>1) 39 + 47 = 86 (см)</div><div>С Точилкой всё сходится!</div></div>
-      </div>
+            <!-- ── Настройки страницы (Аккордеон) ────────────────────────── -->
+            <section class="setting-section">
+                <button
+                    class="sentence-toggle-btn"
+                    id="pageSettingsToggleBtn"
+                    aria-expanded="false"
+                    aria-controls="pageSettingsPanel"
+                >
+                    <span>Настройки страницы</span>
+                    <svg class="chevron-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
 
-      <div class="hint-box">
-        <b>💡 Ударение:</b> поставьте две запятые после буквы: <b>замо,,к</b> → знак появится автоматически.
-      </div>
-    </section>
+                <div
+                    class="sentence-panel"
+                    id="pageSettingsPanel"
+                    aria-hidden="true"
+                    role="region"
+                    aria-label="Настройки страницы"
+                >
+                    <div class="sentence-panel-inner" style="padding-top: 0.5rem;">
+                        <!-- ── 2. Формат бумаги ──────────────────────────────────── -->
+                        <section class="setting-section">
+                            <div class="setting-label">Формат бумаги</div>
+                            <nav
+                                class="seg-group seg-group--3"
+                                role="group"
+                                aria-label="Формат бумаги"
+                                id="paperSizeGroup"
+                            >
+                                <button class="seg-btn active" data-value="a4" aria-pressed="true">A4</button>
+                                <button class="seg-btn" data-value="a5" aria-pressed="false">A5</button>
+                                <button class="seg-btn" data-value="notebook" aria-pressed="false">Тетрадь</button>
+                            </nav>
+                        </section>
 
-    <!-- ── Panel: Format & Grid ── -->
-    <section class="panel" aria-label="Параметры листа">
-      <div class="panel-label">Параметры листа</div>
+                        <!-- ── 3. Ориентация ─────────────────────────────────────── -->
+                        <section class="setting-section">
+                            <div class="setting-label">Ориентация</div>
+                            <nav
+                                class="seg-group seg-group--2"
+                                role="group"
+                                aria-label="Ориентация листа"
+                                id="orientationGroup"
+                            >
+                                <button class="seg-btn seg-btn--icon active" data-value="portrait" aria-pressed="true">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="5" y="2" width="14" height="20" rx="2"/>
+                                    </svg>
+                                    Книжная
+                                </button>
+                                <button class="seg-btn seg-btn--icon" data-value="landscape" aria-pressed="false">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                    </svg>
+                                    Альбомная
+                                </button>
+                            </nav>
+                        </section>
 
-      <div>
-        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Формат</div>
-        <div class="seg-group" role="group" aria-label="Формат листа" data-sk="format">
-          <button class="seg-btn is-active" data-v="a4"  data-action="fmt-a4" aria-pressed="true">A4</button>
-          <button class="seg-btn"           data-v="a5"  data-action="fmt-a5" aria-pressed="false">A5</button>
-        </div>
-      </div>
+                        <!-- ── 3б. Поля ──────────────────────────────────────────── -->
+                        <section class="setting-section">
+                            <div class="setting-label">Поля</div>
+                            <nav
+                                class="seg-group seg-group--3"
+                                role="group"
+                                aria-label="Поле (красная линия)"
+                                id="marginGroup"
+                            >
+                                <button class="seg-btn active" data-value="left" aria-pressed="true">Слева</button>
+                                <button class="seg-btn" data-value="none" aria-pressed="false">Нет</button>
+                                <button class="seg-btn" data-value="right" aria-pressed="false">Справа</button>
+                            </nav>
+                        </section>
 
-      <div>
-        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Ориентация</div>
-        <div class="seg-group" role="group" aria-label="Ориентация" data-sk="orientation">
-          <button class="seg-btn is-active" data-v="portrait"  data-action="ori-portrait"  aria-pressed="true">📄 Книжная</button>
-          <button class="seg-btn"           data-v="landscape" data-action="ori-landscape" aria-pressed="false">🖼 Альбомная</button>
-        </div>
-      </div>
+                        <!-- ── 6. Размещение страниц ─────────────────────────────── -->
+                        <section class="setting-section" style="margin-bottom: 0;">
+                            <div class="setting-label">Размещение</div>
+                            <nav
+                                class="seg-group seg-group--2"
+                                role="group"
+                                aria-label="Размещение страниц при печати"
+                                id="layoutGroup"
+                            >
+                                <button class="seg-btn active" data-value="1-page" aria-pressed="true">1 лист</button>
+                                <button class="seg-btn" data-value="2-pages" aria-pressed="false">2 листа рядом<br><small>(экономия)</small></button>
+                            </nav>
+                            <div class="layout-sub-settings" id="layoutSubSettings">
+                                <label class="checkbox-wrap" style="margin: 0; margin-top: 0.75rem;">
+                                    <input type="checkbox" id="mirrorMarginsCheck">
+                                    <span class="checkbox-box" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 5,9.5 10.5,2.5"/></svg></span>
+                                    <span class="checkbox-text" style="text-transform: none; font-size: 0.75rem;">Зеркальные поля (для вырезания)</span>
+                                </label>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
 
-      <div>
-        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Разлиновка</div>
-        <div class="seg-group" role="group" aria-label="Разлиновка" data-sk="grid" style="flex-wrap:wrap;gap:3px">
-          <button class="seg-btn is-active" data-v="squared"  data-action="grid-squared"  aria-pressed="true">Клетка 5мм</button>
-          <button class="seg-btn"           data-v="frequent" data-action="grid-frequent" aria-pressed="false">Частая косая</button>
-          <button class="seg-btn"           data-v="slanted"  data-action="grid-slanted"  aria-pressed="false">Косая</button>
-          <button class="seg-btn"           data-v="narrow"   data-action="grid-narrow"   aria-pressed="false">Линейка</button>
-          <button class="seg-btn"           data-v="wide"     data-action="grid-wide"     aria-pressed="false">Широкая</button>
-        </div>
-      </div>
+        </div><!-- /.settings-scroll -->
 
-      <div>
-        <div class="panel-label" style="margin-bottom:6px;font-size:.64rem">Режим написания</div>
-        <div class="seg-group" role="group" aria-label="Режим" data-sk="mode">
-          <button class="seg-btn is-active" data-v="tracing"     data-action="mode-trace" aria-pressed="true">Обводка</button>
-          <button class="seg-btn"           data-v="copy"        data-action="mode-copy"  aria-pressed="false">Списывание</button>
-          <button class="seg-btn"           data-v="alternating" data-action="mode-alt"   aria-pressed="false">Чередование</button>
-        </div>
-      </div>
-    </section>
+        <!-- ── Кнопки действий ───────────────────────────────────────── -->
+        <footer class="action-footer">
 
-    <!-- ── Panel: Sentence Analysis ── -->
-    <section class="panel" aria-label="Разбор предложения">
-      <div class="toggle-row">
-        <span class="toggle-label-text">Разбор предложения</span>
-        <label class="toggle-switch" aria-label="Разбор предложения">
-          <input type="checkbox" id="analysisTgl" data-action="toggle-analysis" role="switch">
-          <span class="toggle-track" aria-hidden="true"></span>
-          <span class="toggle-thumb" aria-hidden="true"></span>
-        </label>
-      </div>
+            <!-- Скачать -->
+            <div class="download-wrapper">
+                <button
+                    class="btn btn-secondary"
+                    id="btnDownload"
+                    aria-label="Скачать файл"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Скачать PDF
+                </button>
+            </div>
 
-      <div id="analysisPills" class="analysis-pills" aria-live="polite">
-        <div class="pills-section">
-          <div class="pills-section-label">Цвет подчёркивания</div>
-          <div class="pills-row" role="group">
-            <button class="pill-btn is-active" data-ac="#0F172A" data-action="ac-black" aria-pressed="true">
-              <span class="pill-dot" style="background:#0F172A"></span>Чёрный
+            <!-- Распечатать -->
+            <button
+                class="btn btn-primary"
+                id="btnPrint"
+                aria-label="Распечатать лист прописей"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                </svg>
+                Распечатать
             </button>
-            <button class="pill-btn" data-ac="#C62828" data-action="ac-red" aria-pressed="false">
-              <span class="pill-dot" style="background:#C62828"></span>Красный
-            </button>
-            <button class="pill-btn" data-ac="#1565C0" data-action="ac-blue" aria-pressed="false">
-              <span class="pill-dot" style="background:#1565C0"></span>Синий
-            </button>
-            <button class="pill-btn" data-ac="#5D4037" data-action="ac-brown" aria-pressed="false">
-              <span class="pill-dot" style="background:#5D4037"></span>Кор.
-            </button>
-          </div>
-        </div>
-        <div class="pills-section">
-          <div class="pills-section-label">Тип члена предложения</div>
-          <div class="pills-row" role="group">
-            <button class="pill-btn is-active" data-aul="solid"   data-action="aul-solid"   aria-pressed="true">_ Подлежащее</button>
-            <button class="pill-btn"           data-aul="double"  data-action="aul-double"  aria-pressed="false">= Сказуемое</button>
-            <button class="pill-btn"           data-aul="wavy"    data-action="aul-wavy"    aria-pressed="false">∿ Определение</button>
-            <button class="pill-btn"           data-aul="dashed"  data-action="aul-dashed"  aria-pressed="false">– Дополнение</button>
-            <button class="pill-btn"           data-aul="dotdash" data-action="aul-dotdash" aria-pressed="false">-·- Обстоят.</button>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ── Instruction ── -->
-    <div class="instr-box">
-      Перед печатью: поля <b>«По умолчанию»</b>, включите <b>«Печать фоновой графики»</b>.
-      Для PDF выберите принтер <b>«Сохранить как PDF»</b>.
+        </footer>
+
+    </aside><!-- /.settings-card -->
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         GLASS DRAWER (выезжающая шторка — другие приложения Точилки)
+         ══════════════════════════════════════════════════════════════════ -->
+    <aside class="glass-drawer" id="glassDrawer" aria-label="Другие приложения Точилки" aria-hidden="false">
+        <div class="glass-drawer__panel" id="glassDrawerPanel">
+            <div class="glass-drawer__scroll" id="glassDrawerScroll"></div>
+        </div>
+        <button class="glass-drawer__tab" id="glassDrawerTab" aria-expanded="false" aria-controls="glassDrawerPanel" title="Другие приложения Точилки">Точилка</button>
+    </aside>
+    </div><!-- /.settings-wrapper -->
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         ПРАВАЯ ПАНЕЛЬ: ПРЕВЬЮ ЛИСТА
+         ══════════════════════════════════════════════════════════════════ -->
+    <main
+        class="preview-wrap"
+        role="main"
+        aria-label="Предпросмотр листа прописей"
+    >
+        <!-- Белый лист (аспект-рацио и viewBox управляются через JS) -->
+        <div
+            id="previewSheet"
+            class="a4-sheet"
+            role="img"
+            aria-label="Предпросмотр листа формата A4 книжная"
+        >
+            <!-- SVG инжектируется через render() при загрузке страницы -->
+        </div>
+
+    </main>
+
+    <!-- ВСПЛЫВАЮЩЕЕ СМАРТ-МЕНЮ (Синтаксис и морфемика) -->
+    <div class="smart-menu" id="smartMenu">
+        <!-- Группа (Синтаксис) -->
+        <div class="toolbar-group">
+            <button class="ul-btn toolbar-btn" data-ul="solid" title="Подлежащее"><span class="ul-sample ul-sample--solid">&nbsp;&nbsp;</span></button>
+            <button class="ul-btn toolbar-btn" data-ul="double" title="Сказуемое"><span class="ul-sample ul-sample--double">&nbsp;&nbsp;</span></button>
+            <button class="ul-btn toolbar-btn" data-ul="dashed" title="Дополнение"><span class="ul-sample ul-sample--dashed">&nbsp;&nbsp;</span></button>
+            <button class="ul-btn toolbar-btn" data-ul="dotdash" title="Обстоятельство"><span class="ul-sample ul-sample--dotdash">&nbsp;&nbsp;</span></button>
+            <button class="ul-btn toolbar-btn" data-ul="wavy" title="Определение"><span class="ul-sample ul-sample--wavy">&nbsp;&nbsp;</span></button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <!-- Группа (Морфемика) -->
+        <div class="toolbar-group">
+            <button class="morph-btn toolbar-btn" data-morph="prefix" title="Приставка">¬</button>
+            <button class="morph-btn toolbar-btn" data-morph="root" title="Корень">⌒</button>
+            <button class="morph-btn toolbar-btn" data-morph="suffix" title="Суффикс">^</button>
+            <button class="morph-btn toolbar-btn" data-morph="ending" title="Окончание">□</button>
+            <button class="morph-btn toolbar-btn" data-morph="base" title="Основа">_</button>
+        </div>
     </div>
 
-    <!-- ── Action Buttons ── -->
-    <div class="action-area">
-      <button id="printBtn" class="btn btn-primary" data-action="print-sheet" aria-label="Распечатать лист">
-        <span class="btn-text">🖨 Распечатать лист</span>
-      </button>
-      <button id="pdfBtn" class="btn btn-secondary" data-action="download-pdf" aria-label="Скачать PDF">
-        <span class="btn-text">📄 Скачать PDF</span>
-      </button>
+
+
+    <!-- Модальное окно справки -->
+    <div class="help-modal-overlay" id="helpModalOverlay" aria-hidden="true">
+        <div class="help-modal-content" role="dialog" aria-labelledby="helpModalTitle" aria-modal="true">
+            <button class="help-modal-close" id="helpModalClose" aria-label="Закрыть">×</button>
+            <h2 id="helpModalTitle" class="help-modal-title">Как пользоваться генератором?</h2>
+            
+            <div class="help-modal-body">
+                <h3>✍️ Работа с текстом и разборами</h3>
+                <ul>
+                    <li><b>Ввод и ударения:</b> Печатайте или вставляйте текст в окно. Чтобы поставить ударение, кликните курсором сразу после нужной гласной и нажмите кнопку «´».</li>
+                    <li><b>Цветные ручки:</b> Выбирайте цвет в палитре (кружочки) до применения разбора, чтобы сделать подчеркивание или морфему нужного цвета (например, зеленую приставку).</li>
+                    <li><b>Графические разборы:</b> Выделите любую часть слова или предложение. Прямо над курсором появится смарт-меню: там лежат дуги, корни и линии для синтаксиса.</li>
+                    <li><b>Очистка (Ластик):</b> Выделите текст и нажмите «🧹», чтобы удалить с него все дуги, линии и цвета.</li>
+                </ul>
+
+                <h3>📏 Настройка прописей</h3>
+                <ul>
+                    <li><b>Разлиновка:</b> «Частая косая» — для постановки почерка в 1 классе, «Широкая линия» — для детей постарше. Если выбрать «Клетку», появится удобный чекбокс «1 символ = 1 клетка» для примеров по математике.</li>
+                    <li><b>Обводка или списывание:</b> Режим «Светлые» делает буквы полупрозрачными для обводки по контуру. «Тёмные» оставляет обычный текст.</li>
+                </ul>
+
+                <h3>🖨️ Печать и экономия бумаги</h3>
+                <ul>
+                    <li><b>2 листа на одном:</b> В «Настройках страницы» выберите формат А5, а в Размещении — «2 листа рядом». Программа сама поставит их бок о бок!</li>
+                    <li><b>Зеркальные поля:</b> Включите их, чтобы красная линия на правом листе переместилась вправо. Так листы будет удобно разрезать и вклеивать в тетрадь.</li>
+                    <li><b>Идеальный результат:</b> Нажмите «Распечатать». В настройках вашего принтера строго укажите <b>Масштаб 100%</b> (не нажимайте "вписать в страницу"), иначе клеточки и линии исказятся!</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-  </aside>
+    <!-- JS — UI + SVG-движок (Шаги 1–2) -->
+    <script src="js/app.js"></script>
 
-  <!-- ══════════════════════════════════════════════
-       PREVIEW
-       ══════════════════════════════════════════════ -->
-  <main class="app-preview" aria-label="Предпросмотр листа">
-    <div id="previewWrap" class="preview-wrap">
-      <div id="worksheetPaper" class="worksheet-paper">
-        <svg id="worksheetSVG"
-             xmlns="http://www.w3.org/2000/svg"
-             aria-label="Лист прописи" role="img">
-          <!-- Rendered by app.js -->
-        </svg>
-      </div>
-    </div>
-  </main>
-
-</div><!-- /.app-shell -->
-
-<!-- Toast -->
-<div id="toast" class="toast no-print" role="alert" aria-live="assertive" aria-atomic="true">
-  <span class="toast-icon" aria-hidden="true">ℹ️</span>
-  <span id="toastMsg">Уведомление</span>
-  <button id="toastClose" class="toast-close" aria-label="Закрыть">✕</button>
-</div>
-
-<script src="js/app.js"></script>
 </body>
 </html>
