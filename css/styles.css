@@ -1605,9 +1605,15 @@ body {
 
 /* На мобильных — вертикальная раскладка */
 @media (max-width: 1024px) {
+    html {
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
     body {
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;
         height: auto;
         min-height: 100vh;
     }
