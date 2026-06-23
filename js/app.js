@@ -1215,8 +1215,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    render();
-    requestAnimationFrame(renderLoop);
+    document.fonts.ready.then(() => {
+        render();
+        requestAnimationFrame(renderLoop);
+    });
 
     console.log('%c✅ Прописи — Canvas-замер + SVG-ударения активны', 'color:#006584;font-weight:700;font-size:14px;');
     console.log(
